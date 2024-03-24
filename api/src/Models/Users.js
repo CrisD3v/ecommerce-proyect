@@ -42,6 +42,10 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         defaultValue: "https://ui-avatars.com/api/?background=random",
       },
+      isAdmin: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
     },
     {
       freezeTableName: true,

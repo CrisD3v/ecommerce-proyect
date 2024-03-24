@@ -8,6 +8,7 @@ const server = express();
 const userRoutes = require("../Routes/Users.routes");
 const productRoutes = require("../Routes/Products.routes");
 const rolRoutes = require("../Routes/Rol.routes");
+const ordersRoutes = require("../Routes/Orders.routes");
 
 server.use(cors());
 server.set("port", process.env.PORT || 3004);
@@ -18,15 +19,19 @@ server.use(express.urlencoded({ extended: false }));
 // Rutas middleware
 server.use("/api/users", userRoutes);
 server.use("/api/products", productRoutes);
-
+server.use("/api/rol", rolRoutes);
+server.use("/api/orders", ordersRoutes);
 
 // Test route
 server.get("/", (req, res) => {
   res.send("Ecommerce API is running...");
 });
 
-const { deleteInactiveProducts } = require("../Utils/Validaciones/Data.utils");
+// Elimina Datos cada 3 dias
+const { deleteInactiveData } = require("../Utils/Validaciones/Data.utils");
 // Ejecuta la función cada 3 días (86400000 ms = 24 horas * 60 minutos * 60 segundos * 1000 ms)
-setInterval(deleteInactiveProducts, 86400000 * 3);
+setInterval(deleteInactiveData.deleteInactiveProducts, 86400000 * 3);
+// Ejecuta la función cada 3 días (86400000 ms = 24 horas * 60 minutos * 60 segundos * 1000 ms)
+setInterval(deleteInactiveData.deleteInactiveOrders, 86400000 * 3);
 
 module.exports = server;

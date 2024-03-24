@@ -34,7 +34,8 @@ let capsEntries = entries.map((entry) => [
 ]);
 sequelize.models = Object.fromEntries(capsEntries);
 
-const { Users, Products, Rol, SubCategories, Orders, Categories } = sequelize.models;
+const { Users, Products, Rol, SubCategories, Orders, Categories } =
+  sequelize.models;
 
 // Declaramos las relaciones:
 
@@ -46,6 +47,9 @@ const { Users, Products, Rol, SubCategories, Orders, Categories } = sequelize.mo
 
 // Locacions.belongsToMany(Machines, { through: "LocacionsMachine" });
 // Machines.belongsToMany(Locacions, { through: "LocacionsMachine" });
+
+Users.belongsTo(Rol);
+Rol.hasMany(Users);
 
 // console.log(sequelize.models);
 

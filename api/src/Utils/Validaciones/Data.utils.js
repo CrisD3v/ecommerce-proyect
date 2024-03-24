@@ -1,4 +1,4 @@
-const { Products } = require("../../App/Db");
+const { Products, Orders, Users } = require("../../App/Db");
 async function validate(input, model, validations) {
   const errors = [];
 
@@ -41,20 +41,48 @@ async function validate(input, model, validations) {
   return errors;
 }
 
-// Función para eliminar productos inactivos
-const deleteInactiveProducts = async () => {
-  try {
-    // Encuentra y elimina los productos inactivos
-    const deletedRows = await Products.destroy({
-      where: {
-        active: false,
-      },
-    });
+// Funciónes para eliminar datos inactivos
 
-    console.log(`Se eliminaron ${deletedRows} productos inactivos.`);
-  } catch (error) {
-    console.error("Error al eliminar productos inactivos:", error);
-  }
+const deleteInactiveData = {
+  deleteInactiveProducts: async () => {
+    try {
+      // Encuentra y elimina los productos inactivos
+      const deletedRows = await Products.destroy({
+        where: {
+          active: false,
+        },
+      });
+
+      console.log(`Se eliminaron ${deletedRows} productos inactivos.`);
+    } catch (error) {
+      console.error("Error al eliminar productos inactivos:", error);
+    }
+  },
+  deleteInactiveOrders: async () => {
+    try {
+      // Encuentra todas las órdenes inactivas
+      const inactiveOrders = await Orders.findAll({
+        where: {
+          state: false, // Suponiendo que "state" es el campo que indica si una orden está activa o no
+        },
+      });
+
+      // Recorre todas las órdenes inactivas
+      for (const order of inactiveOrders) {
+        // Busca el usuario asociado a la orden
+        const user = await order.getUser();
+        if (user) {
+          // Elimina la relación entre el usuario y la orden
+          await user.removeOrder(order);
+          // Elimina la orden
+          await order.destroy();
+          return "Orden inactiva eliminada y relación con el usuario también.";
+        }
+      }
+    } catch (error) {
+      console.error("Error al eliminar las órdenes inactivas:", error);
+    }
+  },
 };
 
-module.exports = { validate, deleteInactiveProducts };
+module.exports = { validate, deleteInactiveData };

@@ -1,4 +1,4 @@
-const { Users } = require("../App/Db");
+const { Users, Rol } = require("../App/Db");
 const bcrypt = require("bcrypt");
 
 const usersServices = {
@@ -26,6 +26,8 @@ const usersServices = {
       image,
       isAdmin,
     });
+
+    Rol.addRol(newUser);
 
     return "Se ha registrado un usuario correctamente.";
   },

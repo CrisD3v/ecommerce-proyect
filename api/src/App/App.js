@@ -9,6 +9,7 @@ const userRoutes = require("../Routes/Users.routes");
 const productRoutes = require("../Routes/Products.routes");
 const rolRoutes = require("../Routes/Rol.routes");
 const ordersRoutes = require("../Routes/Orders.routes");
+const categoriesRoutes = require("../Routes/Category.routes");
 
 server.use(cors());
 server.set("port", process.env.PORT || 3004);
@@ -21,6 +22,7 @@ server.use("/api/users", userRoutes);
 server.use("/api/products", productRoutes);
 server.use("/api/rol", rolRoutes);
 server.use("/api/orders", ordersRoutes);
+server.use("/api/categories", categoriesRoutes);
 
 // Test route
 server.get("/", (req, res) => {

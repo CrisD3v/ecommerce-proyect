@@ -50,6 +50,8 @@ const { Users, Products, Rol, SubCategories, Orders, Categories } =
 
 Users.belongsTo(Rol);
 Rol.hasMany(Users);
+SubCategories.belongsTo(Categories);
+Categories.hasMany(SubCategories);
 
 // console.log(sequelize.models);
 

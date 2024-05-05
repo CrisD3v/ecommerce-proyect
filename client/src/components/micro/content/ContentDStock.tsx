@@ -6,10 +6,24 @@ import StockModal from "../modal/StockModal";
 import { useGetProductsQuery } from "@/redux/services/ecommerceApi";
 import CardProductsAdm from "../cards/CardProductsAdm";
 
+interface Product {
+  id: any;
+  price: any;
+  name: string;
+  code: string;
+  image: string;
+  description: string;
+  stock: string;
+}
+
 function ContentDStock() {
   const modalIsOpen = useAppSelector((state) => state.openModal.openModal);
-   const isOpenMenu = useAppSelector((state) => state.openMenu.openMenu);
-  const { data: dataProduct, isLoading, isError } = useGetProductsQuery();
+  const isOpenMenu = useAppSelector((state) => state.openMenu.openMenu);
+  const {
+    data: dataProduct = [] as Product[],
+    isLoading,
+    isError,
+  } = useGetProductsQuery();
   const dispatch = useAppDispatch();
   const openModalCreate = () => {
     dispatch(setOpenModal());
@@ -35,7 +49,7 @@ function ContentDStock() {
               isOpenMenu ? "w-[98.5rem]" : "w-[105rem]"
             } flex flex-wrap h-[47rem] mt-20 gap-20 overflow-y-auto transition-all ease-in-out duration-500`}
           >
-            {dataProduct
+            {(dataProduct as Product[])
               ?.slice()
               .reverse()
               .map((el, i) => (

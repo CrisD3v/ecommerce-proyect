@@ -3,10 +3,11 @@ const { subCategoriesServices } = require("../Services/SubCategories.services");
 const subCategoriesController = {
   createSubCategory: async (req, res) => {
     try {
-      const { sub_category } = req.body;
+      const { sub_category, category } = req.body;
       const subCategories = await subCategoriesServices.createSubCategories(
         sub_category,
-        true
+        true,
+        category
       );
       res.status(200).json(subCategories);
     } catch (error) {

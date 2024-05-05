@@ -7,9 +7,11 @@ interface Props {
   radius: string;
   colorIcon: string;
   colorBorder: string;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyPressFunct: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-function InputSearch({ placeHolder, radius, colorIcon, colorBorder }: Props) {
+function InputSearch({ placeHolder, radius, colorIcon, colorBorder, onChange, onKeyPressFunct }: Props) {
   const [isFocused, setIsFocused] = useState(false);
 
   return (
@@ -23,6 +25,8 @@ function InputSearch({ placeHolder, radius, colorIcon, colorBorder }: Props) {
           className={`p-2 pl-3 w-96 outline-none`}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
+          onChange={onChange}
+          onKeyDown={onKeyPressFunct}
         />
       </div>
 

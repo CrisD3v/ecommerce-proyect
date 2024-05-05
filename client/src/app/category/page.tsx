@@ -7,7 +7,7 @@ function page() {
     <div>
       {/* NAV */}
       <div className="">
-        <Nav />
+        <Nav route="category"/>
       </div>
 
       {/* CONTENIDO */}

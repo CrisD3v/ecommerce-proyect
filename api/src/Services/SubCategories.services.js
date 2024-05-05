@@ -1,8 +1,18 @@
-const { SubCategories } = require("../App/Db");
+const { SubCategories, Categories } = require("../App/Db");
 
 const subCategoriesServices = {
-  createSubCategories: async (sub_category, active) => {
+  createSubCategories: async (sub_category, active, category_id) => {
     const subCategory = await SubCategories.create({ sub_category, active });
+
+    // Buscar la categoría por su ID
+    const category = await Categories.findByPk(category_id);
+    if (!category) {
+      console.log(category_id);
+      throw new Error("Categoría no encontrada");
+    }
+
+    // Asignar la subcategoría a la categoría
+    await category.addSubCategory(subCategory);
 
     return "Se creo la sub categoria correctamente.";
   },

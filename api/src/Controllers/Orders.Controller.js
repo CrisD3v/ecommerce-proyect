@@ -4,7 +4,9 @@ const ordersController = {
   createOrder: async (req, res) => {
     try {
       const { idUser } = req.params;
-      const order = await ordersServices.createOrder(idUser, true);
+      const orderData = req.body;
+      console.log(orderData);
+      const order = await ordersServices.createOrder(idUser, orderData, true);
 
       res.status(200).json({ msg: order });
     } catch (error) {
@@ -13,9 +15,8 @@ const ordersController = {
   },
   getOrder: async (req, res) => {
     try {
-      const { id } = req.params;
-      const order = await ordersServices.getOrder(id);
-      res.status(200).json({ msg: order });
+      const order = await ordersServices.getOrder();
+      res.status(200).json(order);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -31,8 +32,19 @@ const ordersController = {
       res.status(500).json({ error: error.message });
     }
   },
+
+  cancelOrder: async (req, res) => {
+    try {
+      const { idUser } = req.params;
+      const order = await ordersServices.cancelOrder(idUser);
+
+      res.status(200).json({ msg: order });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
 };
 
 module.exports = {
-    ordersController
-}
+  ordersController,
+};

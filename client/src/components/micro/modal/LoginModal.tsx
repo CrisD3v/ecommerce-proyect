@@ -9,21 +9,21 @@ interface ModalProps {
 }
 
 const LoginModal: React.FC<ModalProps> = ({ onClose, type }) => {
-//   const [username, setUsername] = useState("");
-//   const [password, setPassword] = useState("");
+  //   const [username, setUsername] = useState("");
+  //   const [password, setPassword] = useState("");
 
-//   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) =>
-//     setUsername(event.target.value);
-//   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) =>
-//     setPassword(event.target.value);
+  //   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+  //     setUsername(event.target.value);
+  //   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+  //     setPassword(event.target.value);
 
-//   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-//     event.preventDefault();
-//     // Aquí puedes manejar la lógica de inicio de sesión
-   
-//     // Cerrar el modal después de enviar el formulario
-//     onClose();
-//   };
+  //   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  //     event.preventDefault();
+  //     // Aquí puedes manejar la lógica de inicio de sesión
+
+  //     // Cerrar el modal después de enviar el formulario
+  //     onClose();
+  //   };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -44,13 +44,9 @@ const LoginModal: React.FC<ModalProps> = ({ onClose, type }) => {
 
   return (
     <div className="fixed inset-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center">
-      <div id="modal" className="bg-white w-5/12 p-8 rounded shadow-md">
+      <div id="modal" className="bg-white w-5/12 p-8 rounded-2xl shadow-md">
         {/* Contenido del modal */}
-        {type == 'signin' ? (
-            <SigIn/>
-        ) : (
-            <SignUp/>
-        )}
+        {type == "signin" ? <SigIn /> : <SignUp />}
         {/* Botón para cerrar el modal */}
         <button
           onClick={onClose}

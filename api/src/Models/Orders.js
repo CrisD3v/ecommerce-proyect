@@ -11,7 +11,11 @@ module.exports = (sequelize) => {
         autoIncrement: true,
       },
       data: {
-        type: DataTypes.ARRAY(DataTypes.STRING),
+        type: DataTypes.JSON,
+        allowNull: false,
+      },
+      UserId: {
+        type: DataTypes.UUID,
         allowNull: false,
       },
       state: {

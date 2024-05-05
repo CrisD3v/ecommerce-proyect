@@ -7,7 +7,6 @@ const productServices = {
     price,
     stock,
     image,
-    type,
     code,
     active
   ) => {
@@ -17,7 +16,6 @@ const productServices = {
       price,
       stock,
       image,
-      type,
       code,
       active
     });

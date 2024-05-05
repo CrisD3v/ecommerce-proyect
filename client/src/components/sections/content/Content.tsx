@@ -1,9 +1,8 @@
 "use client";
 import Filter from "@/components/micro/filter/Filter";
 import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
-import { RootState } from "@/redux/store";
-import { clickAction } from "@/redux/actions";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { toggleClick } from "@/redux/features/isClickedSlice";
 import {
   ArrowLongRightIcon,
   ArrowLongLeftIcon,
@@ -15,24 +14,26 @@ import Link from "next/link";
 import CardProduct from "@/components/micro/cards/CardProduct";
 import CardCategory from "@/components/micro/cards/CardCategory";
 import BannerCard from "@/components/micro/cards/BannerCard";
+import {
+  useGetCategoryQuery,
+  useGetProductsQuery,
+} from "@/redux/services/ecommerceApi";
 
 interface Props {
   type: string;
-  isClicked: boolean;
-  handleClick: () => void;
-}
-
-interface categoryProps {
-  isClicked: boolean;
-  handleClick: () => void;
 }
 
 function Home() {
+  const { data: dataCategory, isLoading, isError } = useGetCategoryQuery();
+  const {
+    data: dataProduct,
+    isLoading: isLoading2,
+    isError: isError2,
+  } = useGetProductsQuery();
+
   return (
     <div className="grid grid-cols-12 m-10">
-      
-      <BannerCard/>
-
+      <BannerCard />
       <div className="col-start-2 col-end-12 mt-5">
         <div className="flex flex-col">
           <div className="flex flex-row w-full">
@@ -52,19 +53,61 @@ function Home() {
           </div>
 
           <div className="flex flex-wrap mt-5 gap-20">
-            <CardProduct />
+            {dataProduct
+              ?.slice(-4)
+              .reverse()
+              .map((el, i) => (
+                <CardProduct
+                  image={el.image}
+                  name={el.name}
+                  price={el.price}
+                  id={el.id}
+                  key={i}
+                />
+              ))}
           </div>
         </div>
       </div>
 
       <div className="col-start-2 col-end-12 mt-5 border-t border-b">
-        <CardCategory category="Cobijas" image="1" key={1} />
+        <div className="flex flex-row w-full">
+          <div className="">
+            <p className="text-4xl font-mono">CATEGORIAS</p>
+          </div>
+
+          <div className="w-full flex justify-end  items-center">
+            <Link
+              href="/category"
+              className="flex w-24 gap-2 hover:text-cyan-500 cursor-pointer select-none"
+            >
+              <p>Ver mas</p>
+              <ArrowLongRightIcon className="w-5" />
+            </Link>
+          </div>
+        </div>
+        <div className="flex flex-wrap gap-5">
+          {dataCategory?.map((el, i) =>
+            i <= 2 ? (
+              <CardCategory
+                category={el.category}
+                image={el.image}
+                key={el.id}
+              />
+            ) : null
+          )}
+        </div>
       </div>
     </div>
   );
 }
 
-function Category({ handleClick, isClicked }: categoryProps) {
+function Category() {
+  const { data: dataProduct, isLoading, isError } = useGetProductsQuery();
+  const isClicked = useAppSelector((state) => state.isClicked.isClicked);
+  const dispatch = useAppDispatch();
+  const handleClick = () => {
+    dispatch(toggleClick()); // Dispatch del action creator para cambiar el estado de isClicked
+  };
   return (
     <div className="grid grid-cols-12 m-10">
       <Transition
@@ -88,7 +131,7 @@ function Category({ handleClick, isClicked }: categoryProps) {
         <div className="flex flex-col">
           <div className="flex flex-row w-full">
             <div className=" border-b border-gray-200 pb-6 w-96 flex gap-2">
-              <p className="text-4xl font-bold mt-2">CATEGORIA</p>
+              <p className="text-4xl font-bold mt-2">NUEVOS</p>
               <div
                 className="flex gap-2 hover:text-cyan-500 cursor-pointer select-none"
                 onClick={handleClick}
@@ -109,31 +152,26 @@ function Category({ handleClick, isClicked }: categoryProps) {
           </Link>
         </div>
         <div className="flex flex-wrap mt-5 gap-20">
-          <CardProduct />
+          {dataProduct
+            ?.slice()
+            .reverse()
+            .map((el, i) => (
+              <CardProduct
+                image={el.image}
+                name={el.name}
+                price={el.price}
+                id={el.id}
+                key={i}
+              />
+            ))}
         </div>
       </div>
     </div>
   );
 }
 
-function Content({ type, handleClick, isClicked }: Props) {
-  return (
-    <div>
-      {type === "home" ? (
-        <Home />
-      ) : (
-        <Category handleClick={handleClick} isClicked={isClicked} />
-      )}
-    </div>
-  );
+function Content({ type }: Props) {
+  return <div>{type === "home" ? <Home /> : <Category />}</div>;
 }
 
-const mapStateToProps = (state: RootState) => ({
-  isClicked: state.isClicked,
-});
-
-const mapDispatchToProps = {
-  handleClick: clickAction,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Content);
+export default Content;

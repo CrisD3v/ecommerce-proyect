@@ -14,12 +14,12 @@ async function validate(input, model, validations) {
 
   const validateField = async (key, value, regex, mensaje) => {
     if (errors.length <= 0) {
-      if (value === "") {
+      if (value === "" && key != "code") {
         errors.push(`${key} es requerido.`);
       } else if (regex && !regex.test(value)) {
         errors.push(mensaje);
       } else {
-        if (key === "name" || key === "code") {
+        if (key === "name") {
           const isRepeated = await repetition(value, key);
           if (isRepeated) errors.push(mensaje);
         }
@@ -27,16 +27,15 @@ async function validate(input, model, validations) {
     }
   };
 
-  for (const key in input) {
-    if (input.hasOwnProperty(key)) {
-      const value = input[key];
-      const validation = validations[key];
+  for (const key of Object.keys(input)) {
+    const value = input[key];
+    const validation = validations[key];
 
-      if (validation) {
-        await validateField(key, value, validation.regex, validation.mensaje);
-      }
+    if (validation) {
+      await validateField(key, value, validation.regex, validation.mensaje);
     }
   }
+
 
   return errors;
 }

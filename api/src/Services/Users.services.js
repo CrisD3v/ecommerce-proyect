@@ -12,7 +12,8 @@ const usersServices = {
     password,
     active,
     image,
-    isAdmin
+    isAdmin,
+    rolId
   ) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await Users.create({
@@ -27,7 +28,15 @@ const usersServices = {
       isAdmin,
     });
 
-    Rol.addRol(newUser);
+    // Suponiendo que "rolId" es el ID del rol que quieres asignar al nuevo usuario
+    const rol = await Rol.findByPk(rolId); // Obtener el rol de la base de datos
+
+    if (rol) {
+      await newUser.setRol(rol); // Asignar el rol al nuevo usuario
+    } else {
+      // Manejar el caso donde no se encuentra el rol
+      console.error("El rol no se encontró.");
+    }
 
     return "Se ha registrado un usuario correctamente.";
   },
@@ -68,7 +77,10 @@ const usersServices = {
 
   // Obtener usuario
   getUsers: async (id) => {
-    const user = await Users.findByPk(id);
+    const user = await Users.findByPk(id, {
+      include: Rol,
+    });
+
     if (!user) {
       return "Usuario no encontrado.";
     }

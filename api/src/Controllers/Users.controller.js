@@ -17,6 +17,7 @@ const usersController = {
         active,
         image,
         isAdmin,
+        rolId
       } = req.body;
 
       const newUser = await usersServices.register(
@@ -28,7 +29,8 @@ const usersController = {
         password,
         active,
         image,
-        isAdmin
+        isAdmin,
+        rolId
       );
 
       res.status(200).json(newUser);
@@ -91,7 +93,7 @@ const usersController = {
       const { id } = req.params;
       const user = await usersServices.getUsers(id);
 
-      if (user === "Usuario no encontrado") res.status(400).json(user);
+      if (user === "Usuario no encontrado.") res.status(400).json(user);
       else res.status(200).json(user);
     } catch (error) {
       res.status(500).json({
@@ -108,7 +110,7 @@ const usersController = {
       const user = await usersServices.login(email, password);
       const userId = await Users.findOne({ where: { email: email } });
       const token = jwt.sign({ id: userId.id }, process.env.JWT_SECRET, {
-        expiresIn: "1h",
+        expiresIn: "24h",
       });
 
       if (

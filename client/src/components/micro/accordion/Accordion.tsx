@@ -24,13 +24,15 @@ const Accordion: React.FC<AccordionProps> = ({ title, children }) => {
           title="EDITAR"
           position="bottom"
           trigger="mouseenter"
+          html={
+            <button
+              type="button"
+              className="px-4 py-4 text-cyan-400"
+            >
+              <PencilSquareIcon className="w-5" />
+            </button>
+          }
         >
-          <button
-            type="button"
-            className="px-4 py-4 text-cyan-400"
-          >
-            <PencilSquareIcon className="w-5" />
-          </button>
         </Tooltip>
         <div
           className="w-full flex items-center justify-between px-4 py-2 cursor-pointer transition-colors duration-300 ease-in-out"
@@ -89,13 +91,15 @@ const MyAccordion: React.FC<props> = ({ data, loading }) => {
                         title="EDITAR"
                         position="top"
                         trigger="mouseenter"
+                        html={
+                          <button
+                            type="button"
+                            className="p-2 text-white bg-cyan-400 rounded-md"
+                          >
+                            <PencilSquareIcon className="w-4" />
+                          </button>
+                        }
                       >
-                        <button
-                          type="button"
-                          className="p-2 text-white bg-cyan-400 rounded-md"
-                        >
-                          <PencilSquareIcon className="w-4" />
-                        </button>
                       </Tooltip>
                     </div>
                   </div>

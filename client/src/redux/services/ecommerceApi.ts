@@ -19,11 +19,12 @@ interface Order {
 interface Cart {
   idUser: string;
 }
+const URL_BASE = process.env.URL_BASE;
 
 export const ecommerceApi = createApi({
   reducerPath: "eccomerceApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3004/",
+    baseUrl: URL_BASE,
     prepareHeaders: (headers, { getState }) => {
       // Obtener el token JWT
       const cookies = new Cookies();
@@ -139,5 +140,5 @@ export const {
   useGetOrderQuery,
   useFinalizeOrderMutation,
   useCancelOrderMutation,
-  useCleanCartMutation
+  useCleanCartMutation,
 } = ecommerceApi;

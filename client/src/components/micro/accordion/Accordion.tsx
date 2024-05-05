@@ -20,19 +20,14 @@ const Accordion: React.FC<AccordionProps> = ({ title, children }) => {
     <div className="border border-gray-300 rounded-md mb-4">
       <div className="flex items-center w-full">
         <Tooltip
-       
+          // options
           title="EDITAR"
           position="bottom"
           trigger="mouseenter"
-          html={
-            <button
-              type="button"
-              className="px-4 py-4 text-cyan-400"
-            >
-              <PencilSquareIcon className="w-5" />
-            </button>
-          }
         >
+          <button type="button" className="px-4 py-4 text-cyan-400">
+            <PencilSquareIcon className="w-5" />
+          </button>
         </Tooltip>
         <div
           className="w-full flex items-center justify-between px-4 py-2 cursor-pointer transition-colors duration-300 ease-in-out"
@@ -69,17 +64,21 @@ interface props {
 const MyAccordion: React.FC<props> = ({ data, loading }) => {
    const isOpenMenu = useAppSelector((state) => state.openMenu.openMenu);
   return (
-    <div className={`${isOpenMenu ? "w-[75rem]" : "w-[88rem]"} transition-all ease-in-out duration-500`}>
+    <div
+      className={`${
+        isOpenMenu ? "w-[75rem]" : "w-[88rem]"
+      } transition-all ease-in-out duration-500`}
+    >
       {loading ? (
         <div className="">
           <p>CARGANDO...</p>
         </div>
       ) : (
-        data.map((el:any, index:number) => (
+        data.map((el: any, index: number) => (
           <div className="" key={index}>
             <Accordion title={el.category}>
               {el.SubCategories && el.SubCategories.length > 0 ? (
-                el.SubCategories.map((e:any, i:number) => (
+                el.SubCategories.map((e: any, i: number) => (
                   <div
                     className="flex m-2 p-2 w-full justify-between items-center border-b-2"
                     key={i}
@@ -91,15 +90,13 @@ const MyAccordion: React.FC<props> = ({ data, loading }) => {
                         title="EDITAR"
                         position="top"
                         trigger="mouseenter"
-                        html={
-                          <button
-                            type="button"
-                            className="p-2 text-white bg-cyan-400 rounded-md"
-                          >
-                            <PencilSquareIcon className="w-4" />
-                          </button>
-                        }
                       >
+                        <button
+                          type="button"
+                          className="p-2 text-white bg-cyan-400 rounded-md"
+                        >
+                          <PencilSquareIcon className="w-4" />
+                        </button>
                       </Tooltip>
                     </div>
                   </div>

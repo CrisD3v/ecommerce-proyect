@@ -17,10 +17,14 @@ interface Props {
   onClose: () => void;
 }
 
+interface JwtPayload {
+  id: string; // Ensure the 'id' type is correct as per your usage
+}
+
 function SideCart({ onClose }: Props) {
   const cookies = new Cookies();
   const token = cookies.get("token_user");
-  const user_id = token ? jwtDecode(token)?.id ?? null : null;
+  const user_id = token ? (jwtDecode(token) as JwtPayload).id ?? null : null;
   const productArrState = useAppSelector((state) => state.setProduct.ids); // Obtener el array del estado
   const dispatch = useAppDispatch();
   const {
@@ -63,53 +67,53 @@ function SideCart({ onClose }: Props) {
   });
 
   const createOrder = () => {
-    if (orderedIds.length <= 0) return
-      if (!token) {
-        dispatch(setOpenMenuCart());
-        dispatch(setOpenModal());
-      } else {
-        const jsonProducts = JSON.stringify(productArr);
+    if (orderedIds.length <= 0) return;
+    if (!token) {
+      dispatch(setOpenMenuCart());
+      dispatch(setOpenModal());
+    } else {
+      const jsonProducts = JSON.stringify(productArr);
 
-        try {
-          cleanCart({ idUser: user_id });
-        } catch (error) {
-          console.error("Error al crear la orden:", error);
-        }
-
-        try {
-          createOrderPOST({
-            idUser: user_id,
-            order: [jsonProducts],
-          });
-        } catch (error) {
-          console.error("Error al crear la orden:", error);
-        }
-
-        const messageHeader = `*ORDEN DE COMPRA POR EL USUARIO: ${user_id}*\n*Precio Total: ${formattedTotal}*\n\n`;
-        const messageBody = orderedIds
-          .map((productId) => {
-            const productSend = dataProduct.find(
-              (product) => product.id === productId
-            );
-            const formattedPrice = new Intl.NumberFormat("es-CO", {
-              style: "currency",
-              currency: "COP",
-            }).format(productSend.price);
-            const quantitySend = productsWithQuantity[productId];
-
-            return `${productSend.name} - _*precio: ${formattedPrice}*_ - _*código de producto: ${productSend.code}*_ - _*cantidad: ${quantitySend}*_`;
-          })
-          .join("\n");
-
-        const phoneNumber = 3053577990;
-        const message = `${messageHeader}${messageBody}`;
-
-        const formattedMessage = encodeURIComponent(message);
-        const whatsappLink = `https://wa.me/${phoneNumber}?text=${formattedMessage}`;
-
-        window.open(whatsappLink, "_blank");
-        window.location.reload();
+      try {
+        cleanCart({ idUser: user_id });
+      } catch (error) {
+        console.error("Error al crear la orden:", error);
       }
+
+      try {
+        createOrderPOST({
+          idUser: user_id,
+          order: [jsonProducts],
+        });
+      } catch (error) {
+        console.error("Error al crear la orden:", error);
+      }
+
+      const messageHeader = `*ORDEN DE COMPRA POR EL USUARIO: ${user_id}*\n*Precio Total: ${formattedTotal}*\n\n`;
+      const messageBody = orderedIds
+        .map((productId) => {
+          const productSend = dataProduct.find(
+            (product) => product.id === productId
+          );
+          const formattedPrice = new Intl.NumberFormat("es-CO", {
+            style: "currency",
+            currency: "COP",
+          }).format(productSend.price);
+          const quantitySend = productsWithQuantity[productId];
+
+          return `${productSend.name} - _*precio: ${formattedPrice}*_ - _*código de producto: ${productSend.code}*_ - _*cantidad: ${quantitySend}*_`;
+        })
+        .join("\n");
+
+      const phoneNumber = 3053577990;
+      const message = `${messageHeader}${messageBody}`;
+
+      const formattedMessage = encodeURIComponent(message);
+      const whatsappLink = `https://wa.me/${phoneNumber}?text=${formattedMessage}`;
+
+      window.open(whatsappLink, "_blank");
+      window.location.reload();
+    }
   };
 
   return (

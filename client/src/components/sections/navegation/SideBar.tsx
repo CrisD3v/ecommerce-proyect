@@ -40,7 +40,7 @@ function SideBar({item}:props) {
           // options
           title={close? "EXPANDIR EL MENÚ" : "CONTRAER EL MENÚ"}
           position="right"
-          trigger="mouseenter "
+          trigger="mouseenter"
         >
           <div
             className="cursor-pointer hover:bg-black hover:text-white hover:bg-opacity-20 hover:rounded-full hover:transition-all hover:duration-150 hover:ease-in-out transition-all ease-out duration-150 w-10 h-10 flex items-center justify-center"

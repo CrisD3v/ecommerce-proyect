@@ -7,11 +7,15 @@ import { useGetStoreQuery } from "@/redux/services/ecommerceApi";
 import Cookies from "universal-cookie";
 import { jwtDecode } from "jwt-decode";
 
+interface JwtPayload {
+  id: string; // Ensure the 'id' type is correct as per your usage
+}
+
 export default function Home() {
   const dispatch = useAppDispatch();
   const cookies = new Cookies();
   const token = cookies.get("token_user");
-  const user_id = token ? jwtDecode(token)?.id ?? null : null;
+   const user_id = token ? (jwtDecode(token) as JwtPayload).id ?? null : null;
   const {
     data: productArrBD,
     isLoading: isLoading2,
@@ -27,12 +31,12 @@ export default function Home() {
 
       if (userProduct) {
         const data = userProduct.products;
-        data.forEach((e, i) => {
+        data.forEach((e:any, i) => {
           dispatch(setProductArr(e));
         });
       }
     }
-  }, []); // Paso un arreglo vacío para que el efecto se ejecute solo una vez
+  }, [dispatch, productArrBD, token, user_id]); // Paso un arreglo con las dependencias necesarias para que el efecto se ejecute correctamente
 
   return (
     <main className="min-h-screen">

@@ -22,9 +22,18 @@ interface props {
   route: string;
 }
 
+interface JwtPayload {
+  id: string; // Ensure the 'id' type is correct as per your usage
+}
+
+interface User {
+  name: string;
+  RolId: number;
+}
+
 function Nav({ route }: props) {
   const [isOpen, setIsOpen] = useState(false);
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState<User | null>(null);
   const router = useRouter();
   const modalIsOpen = useAppSelector((state) => state.openModal.openModal);
   const cartMenuIsOpen = useAppSelector(
@@ -44,7 +53,7 @@ function Nav({ route }: props) {
   const cookies = new Cookies();
   const token = cookies.get("token_user");
   const userQueryResult = useGetUserQuery({
-    id: token ? jwtDecode(token)?.id : null,
+    id: token ? (jwtDecode(token) as JwtPayload).id ?? '' : '',
   });
   const {
     data: response,
@@ -54,7 +63,11 @@ function Nav({ route }: props) {
 
   useEffect(() => {
     if (token && !isLoading && !isError && response) {
-      setUserData(response);
+      if ('name' in response && 'RolId' in response) {
+        setUserData(response as User);
+      } else {
+        console.error("La respuesta no tiene la forma esperada:", response);
+      }
     }
   }, [token, isLoading, isError, response]);
   const logout = () => {
@@ -105,6 +118,8 @@ function Nav({ route }: props) {
             radius="rounded"
             colorIcon="red-900"
             colorBorder="red-900"
+            onChange={null}
+            onKeyPressFunct={null}
           />
         </div>
       </div>

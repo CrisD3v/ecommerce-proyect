@@ -55,7 +55,7 @@ function SideMenu({ isClose, item }: props) {
            <Link href={el.link}>
             <div
               className={`grid grid-cols-12 p-4 cursor-pointer transition-all ease-out duration-150 ${
-                item.toUpperCase() == el.active ? "text-cyan-300" : ""
+                item.toUpperCase() == el.ACT ? "text-cyan-300" : ""
               }
          ${
            isClose

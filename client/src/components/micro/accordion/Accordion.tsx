@@ -20,7 +20,7 @@ const Accordion: React.FC<AccordionProps> = ({ title, children }) => {
     <div className="border border-gray-300 rounded-md mb-4">
       <div className="flex items-center w-full">
         <Tooltip
-          // options
+       
           title="EDITAR"
           position="bottom"
           trigger="mouseenter"

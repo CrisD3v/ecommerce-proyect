@@ -1,5 +1,4 @@
 import { setOpenModal } from "@/redux/features/modalSlice";
-import { setDataOnReload } from "@/redux/features/isReloadShopWindowSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import {
   useCreateSubCategoryMutation,

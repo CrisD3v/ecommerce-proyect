@@ -40,6 +40,7 @@ function Nav({ route }: props) {
     dispatch(setOpenMenuCart());
   };
 
+
   const cookies = new Cookies();
   const token = cookies.get("token_user");
   const userQueryResult = useGetUserQuery({

@@ -29,7 +29,8 @@ function CardProductCart({ image, name, price, id, cantidad }: Props) {
   const dispatch = useAppDispatch();
   const cookies = new Cookies();
   const token = cookies.get("token_user");
-  const user_id = token ? jwtDecode(token)?.id : null;
+  const user_id = token ? jwtDecode(token)?.id ?? null : null;
+
   const {
     data: productArrBD,
     isLoading: isLoading2,
@@ -43,7 +44,6 @@ function CardProductCart({ image, name, price, id, cantidad }: Props) {
     id: user_id,
     products: [id],
   };
-
 
   const addToCart = async (product_id: number) => {
     dispatch(setProductArr(product_id));

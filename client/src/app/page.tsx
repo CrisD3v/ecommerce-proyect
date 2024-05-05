@@ -11,7 +11,7 @@ export default function Home() {
   const dispatch = useAppDispatch();
   const cookies = new Cookies();
   const token = cookies.get("token_user");
-  const user_id = token ? jwtDecode(token)?.id : null;
+  const user_id = token ? jwtDecode(token)?.id ?? null : null;
   const {
     data: productArrBD,
     isLoading: isLoading2,

@@ -24,14 +24,14 @@ function CardProduct({ image, name, price, id }: Props) {
   const dispatch = useAppDispatch();
   const [storeProduct, { isLoading, isError }] = useStoreProductsMutation();
   const [updateStoreProduct, { isLoading: loading, isError: err }] =
-  useUpdateStoreProductsMutation();
+    useUpdateStoreProductsMutation();
   const {
     data: productArrBD,
     isLoading: isLoading2,
     isError: isError2,
   } = useGetStoreQuery(); // Obtener el array del estado en BD
   const token = cookies.get("token_user");
-  const user_id = token ? jwtDecode(token)?.id : null;
+  const user_id = token ? jwtDecode(token)?.id ?? null : null;
   const productArr = useAppSelector((state) => state.setProduct.ids); // Obtener el array del estado
   let dataToSend = {
     id: user_id,

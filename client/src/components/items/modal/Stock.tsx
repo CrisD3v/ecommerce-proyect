@@ -26,7 +26,7 @@ function Stock() {
     { name: "file", label: "Imagen del producto", type: "file" },
   ];
 
-  const [inputs, setInputs] = useState<{ [key: string]: string | File }>({
+  const [inputs, setInputs] = useState<{ [key: string]: string | File | boolean}>({
     name: "",
     price: "",
     stock: "",

@@ -20,7 +20,7 @@ interface Props {
 function SideCart({ onClose }: Props) {
   const cookies = new Cookies();
   const token = cookies.get("token_user");
-  const user_id = token ? jwtDecode(token)?.id : null;
+  const user_id = token ? jwtDecode(token)?.id ?? null : null;
   const productArrState = useAppSelector((state) => state.setProduct.ids); // Obtener el array del estado
   const dispatch = useAppDispatch();
   const {

@@ -11,13 +11,18 @@ interface JwtPayload {
   id: string; // Ensure the 'id' type is correct as per your usage
 }
 
+interface Product {
+  UserId: string;
+  products: any;
+}
+
 export default function Home() {
   const dispatch = useAppDispatch();
   const cookies = new Cookies();
   const token = cookies.get("token_user");
    const user_id = token ? (jwtDecode(token) as JwtPayload).id ?? null : null;
   const {
-    data: productArrBD,
+    data: productArrBD = [] as Product[],
     isLoading: isLoading2,
     isError: isError2,
   } = useGetStoreQuery(); // Obtener el array del estado en BD
@@ -25,13 +30,13 @@ export default function Home() {
   useEffect(() => {
     if (token && productArrBD && productArrBD.length > 0) {
       // Verificar si hay algún producto del usuario en productArrBD
-      const userProduct = productArrBD.find(
+      const userProduct = (productArrBD as Product[]).find(
         (product) => product.UserId === user_id
       );
 
       if (userProduct) {
         const data = userProduct.products;
-        data.forEach((e:any, i) => {
+        data.forEach((e:any, i:number) => {
           dispatch(setProductArr(e));
         });
       }

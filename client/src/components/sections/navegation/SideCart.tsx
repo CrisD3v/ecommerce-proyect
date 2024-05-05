@@ -21,6 +21,19 @@ interface JwtPayload {
   id: string; // Ensure the 'id' type is correct as per your usage
 }
 
+interface Store {
+  UserId: string;
+  id: string;
+}
+
+interface Product {
+  id: any;
+  price: any;
+  name: string;
+  code: string;
+  image: string;
+}
+
 function SideCart({ onClose }: Props) {
   const cookies = new Cookies();
   const token = cookies.get("token_user");
@@ -28,11 +41,15 @@ function SideCart({ onClose }: Props) {
   const productArrState = useAppSelector((state) => state.setProduct.ids); // Obtener el array del estado
   const dispatch = useAppDispatch();
   const {
-    data: productArrBD,
+    data: productArrBD = [] as Store[],
     isLoading: isLoading2,
     isError: isError2,
   } = useGetStoreQuery(); // Obtener el array del estado en BD
-  const { data: dataProduct, isLoading, isError } = useGetProductsQuery();
+  const {
+    data: dataProduct = [] as Product[],
+    isLoading,
+    isError,
+  } = useGetProductsQuery();
   const [createOrderPOST, { isLoading: isLoadingC, isError: isErrrorC }] =
     useCreateOrderMutation();
   const [cleanCart, { isLoading: isLoadingD, isError: isErrrorD }] =
@@ -45,7 +62,7 @@ function SideCart({ onClose }: Props) {
   const orderedIds: number[] = [];
 
   // Contar las cantidades de cada producto en productArr y mantener el orden
-  productArr.forEach((productId) => {
+  productArr.forEach((productId: any) => {
     if (!productsWithQuantity[productId]) {
       orderedIds.push(productId);
     }
@@ -55,7 +72,10 @@ function SideCart({ onClose }: Props) {
 
   // Calcular el total del carrito
   const total = orderedIds.reduce((acc, productId) => {
-    const product = dataProduct.find((product) => product.id === productId);
+    const product = (dataProduct as Product[]).find(
+      (product: any) => product.id === productId
+    );
+    if (!product) return acc;
     const quantity = productsWithQuantity[productId];
     return acc + (product?.price || 0) * quantity;
   }, 0);
@@ -68,7 +88,7 @@ function SideCart({ onClose }: Props) {
 
   const createOrder = () => {
     if (orderedIds.length <= 0) return;
-    if (!token) {
+    if (!token || user_id === null) {
       dispatch(setOpenMenuCart());
       dispatch(setOpenModal());
     } else {
@@ -92,9 +112,10 @@ function SideCart({ onClose }: Props) {
       const messageHeader = `*ORDEN DE COMPRA POR EL USUARIO: ${user_id}*\n*Precio Total: ${formattedTotal}*\n\n`;
       const messageBody = orderedIds
         .map((productId) => {
-          const productSend = dataProduct.find(
+          const productSend = (dataProduct as Product[]).find(
             (product) => product.id === productId
           );
+          if (!productSend) return "";
           const formattedPrice = new Intl.NumberFormat("es-CO", {
             style: "currency",
             currency: "COP",
@@ -134,9 +155,10 @@ function SideCart({ onClose }: Props) {
         </div>
         <div className="flex items-center justify-center overflow-y-auto h-[53rem] flex-wrap gap-5">
           {orderedIds.map((productId, i) => {
-            const product = dataProduct.find(
+            const product = (dataProduct as Product[]).find(
               (product) => product.id === productId
             );
+            if (!product) return null;
             const quantity = productsWithQuantity[productId];
             return (
               <CardProductCart
@@ -144,7 +166,7 @@ function SideCart({ onClose }: Props) {
                 image={product.image}
                 name={product.name}
                 price={product.price}
-                cantidad={quantity}
+                cantidad={quantity.toString()}
                 key={i}
               />
             );

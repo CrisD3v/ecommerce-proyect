@@ -23,7 +23,7 @@ function CardProductsAdm({
   const formattedPrice = new Intl.NumberFormat("es-CO", {
     style: "currency",
     currency: "COP",
-  }).format(price);
+  }).format(Number(price));
   return (
     <div className="w-72 h-[28rem] cursor-pointer bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300 border">
       {/* <Image

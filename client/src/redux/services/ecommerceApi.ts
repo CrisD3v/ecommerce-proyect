@@ -17,7 +17,7 @@ interface Order {
 }
 
 interface Cart {
-  idUser: UUID;
+  idUser: string;
 }
 
 export const ecommerceApi = createApi({
@@ -115,7 +115,7 @@ export const ecommerceApi = createApi({
         method: "PUT",
       }),
     }),
-    cleanCart: builder.mutation<Cart, { idUser: UUID }>({
+    cleanCart: builder.mutation<Cart, { idUser: string }>({
       query: ({ idUser }) => ({
         url: `/api/cart/delete/${idUser}`,
         method: "DELETE",

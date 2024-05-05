@@ -24,15 +24,24 @@ interface Props {
   id: number;
 }
 
+interface JwtPayload {
+  id: string; // Ensure the 'id' type is correct as per your usage
+}
+
+interface Store {
+  UserId: string;
+  id: string;
+}
+
 function CardProductCart({ image, name, price, id, cantidad }: Props) {
   const URL_BASE = process.env.URL_BASE;
   const dispatch = useAppDispatch();
   const cookies = new Cookies();
   const token = cookies.get("token_user");
-  const user_id = token ? jwtDecode(token)?.id ?? null : null;
+  const user_id = token ? (jwtDecode(token) as JwtPayload).id ?? null : null;
 
   const {
-    data: productArrBD,
+    data: productArrBD = [] as Store[],
     isLoading: isLoading2,
     isError: isError2,
   } = useGetStoreQuery(); // Obtener el array del estado en BD
@@ -50,7 +59,7 @@ function CardProductCart({ image, name, price, id, cantidad }: Props) {
     try {
       if (!token) return;
 
-      const userProduct = productArrBD.find(
+      const userProduct = (productArrBD as Store[]).find(
         (product) => product.UserId === user_id
       );
       const isUserProductExist = !!userProduct;
@@ -75,7 +84,7 @@ function CardProductCart({ image, name, price, id, cantidad }: Props) {
   const removeCantFromCart = (productId: number) => {
     dispatch(removeProductCantId(productId)); // Enviar el id del producto a la acción para eliminarlo del carrito
     if (token) {
-      let productsUpdate: number[] = productArr.slice(); // Hacer una copia del array productArr
+      let productsUpdate: number[] = productArr.map(Number); //productArr.slice(); // Hacer una copia del array productArr
       const indexToRemove = productsUpdate.indexOf(productId); // Encontrar el índice del id a eliminar
       if (indexToRemove !== -1) {
         productsUpdate.splice(indexToRemove, 1); // Eliminar el id del array
@@ -86,7 +95,7 @@ function CardProductCart({ image, name, price, id, cantidad }: Props) {
       // Verificar si productArrBD está definido y no está vacío
       if (productArrBD && productArrBD.length > 0) {
         // Verificar si hay algún producto del usuario en productArrBD
-        const userProduct = productArrBD.find(
+        const userProduct = (productArrBD as Store[]).find(
           (products) => products.UserId === user_id
         );
 
@@ -108,7 +117,7 @@ function CardProductCart({ image, name, price, id, cantidad }: Props) {
   const formattedPrice = new Intl.NumberFormat("es-CO", {
     style: "currency",
     currency: "COP",
-  }).format(price);
+  }).format(Number(price));
   return (
     <div className="w-[18rem] bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300 border">
       {/* <Image

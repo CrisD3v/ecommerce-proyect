@@ -12,6 +12,12 @@ interface Inputs {
   category: number;
 }
 
+interface Category {
+  id: number;
+  category: string;
+  active: boolean;
+}
+
 function SubCategory() {
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -26,7 +32,7 @@ function SubCategory() {
 
   const [createSubCategory] = useCreateSubCategoryMutation();
 
-  const { data: data, isLoading, isError } = useGetCategoryQuery();
+  const { data = [] as Category[], isLoading, isError } = useGetCategoryQuery();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -96,7 +102,7 @@ function SubCategory() {
               defaultValue="SELECCIONA UNA CATEGORIA" // Usando defaultValue para seleccionar la opción inicial
             >
               <option disabled>SELECCIONA UNA CATEGORIA</option>
-              {data?.map((el, index) => {
+              {(data as Category[])?.map((el, index) => {
                 return el.active ? (
                   <option key={index} value={el.id}>
                     {el.category}

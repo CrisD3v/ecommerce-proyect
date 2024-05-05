@@ -23,7 +23,7 @@ const Accordion: React.FC<AccordionProps> = ({ title, children }) => {
           // options
           title="EDITAR"
           position="bottom"
-          trigger="mouseenter "
+          trigger="mouseenter"
         >
           <button
             type="button"
@@ -73,11 +73,11 @@ const MyAccordion: React.FC<props> = ({ data, loading }) => {
           <p>CARGANDO...</p>
         </div>
       ) : (
-        data.map((el, index) => (
+        data.map((el:any, index:number) => (
           <div className="" key={index}>
             <Accordion title={el.category}>
               {el.SubCategories && el.SubCategories.length > 0 ? (
-                el.SubCategories.map((e, i) => (
+                el.SubCategories.map((e:any, i:number) => (
                   <div
                     className="flex m-2 p-2 w-full justify-between items-center border-b-2"
                     key={i}
@@ -88,7 +88,7 @@ const MyAccordion: React.FC<props> = ({ data, loading }) => {
                         // options
                         title="EDITAR"
                         position="top"
-                        trigger="mouseenter "
+                        trigger="mouseenter"
                       >
                         <button
                           type="button"

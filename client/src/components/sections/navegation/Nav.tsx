@@ -83,7 +83,7 @@ function Nav({ route }: props) {
     {
       name: "Dashboard",
       function: null,
-      link: `/dashboard/admin/${token ? jwtDecode(token)?.id : 0}/tienda`,
+      link: `/dashboard/admin/${token ? (jwtDecode(token) as JwtPayload).id ?? 0 : 0}/tienda`,
     },
     { name: "Cerrar sesión", function: () => logout(), link: "" }, // Sin los paréntesis después de logout
   ];
@@ -118,8 +118,8 @@ function Nav({ route }: props) {
             radius="rounded"
             colorIcon="red-900"
             colorBorder="red-900"
-            onChange={null}
-            onKeyPressFunct={null}
+            onChange={() => (null)}
+            onKeyPressFunct={() => (null)}
           />
         </div>
       </div>
@@ -151,7 +151,7 @@ function Nav({ route }: props) {
                     <Link href={el.link} key={index}>
                       <li className="cursor-pointer">
                         <a
-                          onClick={el.function}
+                          onClick={el.function || (() => {})}
                           className="block px-4 py-2 text-gray-800 hover:bg-indigo-500 hover:text-white"
                         >
                           {el.name}

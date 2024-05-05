@@ -15,11 +15,7 @@ function NavUserIcon({ text, icon }: Props) {
       className={`flex justify-center items-center flex-col cursor-pointer hover:text-cyan-500`}
     >
       <span>
-          {icon ? (
-            <img className="rounded-full w-14" src={`${URL_BASE}uploads/${icon}`} alt="user" />
-          ): (
             <UserCircleIcon className="w-6"/>
-          )}
       </span>
       <Options text={text} />
     </div>

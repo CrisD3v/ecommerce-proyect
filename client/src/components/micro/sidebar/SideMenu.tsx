@@ -7,8 +7,8 @@ import {
   ArrowLeftCircleIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
-import { Tooltip } from "react-tippy";
-import "react-tippy/dist/tippy.css";
+import { Tooltip } from "react-tooltip";
+import "react-tooltip/dist/react-tooltip.css";
 import Link from "next/link";
 import Cookies from "universal-cookie";
 import { jwtDecode } from "jwt-decode";
@@ -18,67 +18,75 @@ interface props {
   item: string;
 }
 
+interface JwtPayload {
+  id: string; // Ensure the 'id' type is correct as per your usage
+}
+
 function SideMenu({ isClose, item }: props) {
-   const cookies = new Cookies();
-   const token = cookies.get("token_user");
+  const cookies = new Cookies();
+  const token = cookies.get("token_user");
   const menuOptions = [
     {
       active: "TIENDA",
       name: "TIENDA",
       icon: <BuildingStorefrontIcon className={`${isClose ? "w-6" : ""}`} />,
-      link: `/dashboard/admin/${token ? jwtDecode(token)?.id : 0}/tienda`,
+      link: `/dashboard/admin/${
+        token ? (jwtDecode(token) as JwtPayload).id ?? 0 : 0
+      }/tienda`,
     },
     {
       active: "STOCK",
       name: "STOCK",
       icon: <InboxStackIcon className={`${isClose ? "w-6" : ""}`} />,
-      link: `/dashboard/admin/${token ? jwtDecode(token)?.id : 0}/stock`,
+      link: `/dashboard/admin/${
+        token ? (jwtDecode(token) as JwtPayload).id ?? 0 : 0
+      }/stock`,
     },
     {
       active: "ORDER",
       name: "ORDENES DE COMPRA",
       icon: <NewspaperIcon className={`${isClose ? "w-6" : ""}`} />,
-      link: `/dashboard/admin/${token ? jwtDecode(token)?.id : 0}/order`,
+      link: `/dashboard/admin/${
+        token ? (jwtDecode(token) as JwtPayload).id ?? 0 : 0
+      }/order`,
     },
   ];
   return (
     <div className="flex flex-col h-max select-none transition-all ease-out">
       <div className={`mt-40`}>
         {menuOptions.map((el, index) => (
-          <Tooltip
+          <div
             key={index}
-            // options
-            title={el.name}
-            position="right"
-            trigger="mouseenter "
+            data-tooltip-id="tooltip-menu2"
+            data-tooltip-content={el.name}
           >
-           <Link href={el.link}>
-            <div
-              className={`grid grid-cols-12 p-4 cursor-pointer transition-all ease-out duration-150 ${
-                item.toUpperCase() == el.ACT ? "text-cyan-300" : ""
-              }
+            <Link href={el.link}>
+              <div
+                className={`grid grid-cols-12 p-4 cursor-pointer transition-all ease-out duration-150 ${
+                  item.toUpperCase() == el.active ? "text-cyan-300" : ""
+                }
          ${
            isClose
              ? "w-14 h-14 hover:bg-black hover:text-white hover:bg-opacity-20 hover:rounded-full hover:transition-all hover:duration-150 hover:ease-in-out m-auto"
              : " hover:bg-black hover:bg-opacity-30 hover:text-white hover:rounded-sm hover:transition-all hover:duration-150 hover:ease-in-out"
          }`}
-            >
-              <div
-                className={` ${
-                  isClose
-                    ? "invisible col-span-3"
-                    : "visible col-span-10 transition-opacity ease-in duration-1000"
-                }`}
-                style={{ opacity: isClose ? 0 : 1 }}
               >
-                <p>{el.name}</p>
+                <div
+                  className={` ${
+                    isClose
+                      ? "invisible col-span-3"
+                      : "visible col-span-10 transition-opacity ease-in duration-1000"
+                  }`}
+                  style={{ opacity: isClose ? 0 : 1 }}
+                >
+                  <p>{el.name}</p>
+                </div>
+                <div className={`cols-span-2 ${isClose ? "-ml-1.5" : ""}`}>
+                  <span>{el.icon}</span>
+                </div>
               </div>
-              <div className={`cols-span-2 ${isClose ? "-ml-1.5" : ""}`}>
-                <span>{el.icon}</span>
-              </div>
-            </div>
             </Link>
-          </Tooltip>
+          </div>
         ))}
       </div>
 
@@ -90,13 +98,12 @@ function SideMenu({ isClose, item }: props) {
             : "justify-between flex-row mr-5 ml-3 items-end"
         }`}
       >
-          <Link href={'/'}>
-        <div className="flex flex-row items-center cursor-pointer hover:transition-all hover:duration-200 hover:ease-in-out hover:text-xl transition-all ease-out duration-150 group">
-            <Tooltip
+        <Link href={"/"}>
+          <div className="flex flex-row items-center cursor-pointer hover:transition-all hover:duration-200 hover:ease-in-out hover:text-xl transition-all ease-out duration-150 group">
+            <div
               // options
-              title="HOME"
-              position="right"
-              trigger="mouseenter "
+              data-tooltip-id="tooltip-menu2"
+              data-tooltip-content="HOME"
               className={`${
                 isClose
                   ? "w-10 h-10 hover:bg-black hover:text-white hover:bg-opacity-20 hover:rounded-full hover:transition-all hover:duration-150 hover:ease-in-out"
@@ -112,7 +119,7 @@ function SideMenu({ isClose, item }: props) {
                   }`}
                 />
               </span>
-            </Tooltip>
+            </div>
             <div
               className={`${
                 isClose
@@ -124,14 +131,13 @@ function SideMenu({ isClose, item }: props) {
                 {isClose ? "" : "HOME"}
               </p>
             </div>
-        </div>
-          </Link>
+          </div>
+        </Link>
         <div className="flex flex-row items-center cursor-pointer">
-          <Tooltip
-            // options
-            title="PERFIL"
-            position="right"
-            trigger="mouseenter "
+          <Tooltip id="tooltip-menu2" place="right" />
+          <div
+            data-tooltip-id="tooltip-menu2"
+            data-tooltip-content="PERFIL"
             className={`${
               isClose
                 ? "w-10 h-10 hover:bg-black hover:text-white hover:bg-opacity-20 hover:rounded-full hover:transition-all hover:duration-150 hover:ease-in-out"
@@ -147,7 +153,7 @@ function SideMenu({ isClose, item }: props) {
                 }`}
               />
             </span>
-          </Tooltip>
+          </div>
           <div className={`${isClose ? "invisible" : "visible"}`}>
             <p className="transition-opacity ease-in duration-1000">
               {isClose ? "" : "CRISTIAN"}

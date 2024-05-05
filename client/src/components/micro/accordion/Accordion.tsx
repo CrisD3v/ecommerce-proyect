@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ChevronDownIcon, PencilSquareIcon } from "@heroicons/react/20/solid";
-import { Tooltip } from "react-tippy";
-import "react-tippy/dist/tippy.css";
+import { Tooltip } from "react-tooltip";
+import "react-tooltip/dist/react-tooltip.css";
 import { useAppSelector } from "@/redux/hooks";
 
 interface AccordionProps {
@@ -19,16 +19,14 @@ const Accordion: React.FC<AccordionProps> = ({ title, children }) => {
   return (
     <div className="border border-gray-300 rounded-md mb-4">
       <div className="flex items-center w-full">
-        <Tooltip
-          // options
-          title="EDITAR"
-          position="bottom"
-          trigger="mouseenter"
+        <Tooltip id="tooltip-edit" content="EDITAR" place="bottom" />
+        <button
+          type="button"
+          className="px-4 py-4 text-cyan-400"
+          data-tooltip-id="tooltip-edit"
         >
-          <button type="button" className="px-4 py-4 text-cyan-400">
-            <PencilSquareIcon className="w-5" />
-          </button>
-        </Tooltip>
+          <PencilSquareIcon className="w-5" />
+        </button>
         <div
           className="w-full flex items-center justify-between px-4 py-2 cursor-pointer transition-colors duration-300 ease-in-out"
           onClick={toggleAccordion}
@@ -62,7 +60,7 @@ interface props {
 }
 
 const MyAccordion: React.FC<props> = ({ data, loading }) => {
-   const isOpenMenu = useAppSelector((state) => state.openMenu.openMenu);
+  const isOpenMenu = useAppSelector((state) => state.openMenu.openMenu);
   return (
     <div
       className={`${
@@ -85,19 +83,15 @@ const MyAccordion: React.FC<props> = ({ data, loading }) => {
                   >
                     <p className="">{e.sub_category}</p>
                     <div className="">
-                      <Tooltip
-                        // options
-                        title="EDITAR"
-                        position="top"
-                        trigger="mouseenter"
+                      <Tooltip id="tooltip-edit2" content="EDITAR" place="top" />
+
+                      <button
+                        type="button"
+                        className="p-2 text-white bg-cyan-400 rounded-md"
+                        data-tooltip-id="tooltip-edit2"
                       >
-                        <button
-                          type="button"
-                          className="p-2 text-white bg-cyan-400 rounded-md"
-                        >
-                          <PencilSquareIcon className="w-4" />
-                        </button>
-                      </Tooltip>
+                        <PencilSquareIcon className="w-4" />
+                      </button>
                     </div>
                   </div>
                 ))

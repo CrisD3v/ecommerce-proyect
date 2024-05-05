@@ -17,9 +17,9 @@ function Category() {
     { name: "file", label: "Imagen de Categoria", type: "file" },
   ];
 
-  const [inputs, setInputs] = useState<{ [key: string]: string | File }>({
+  const [inputs, setInputs] = useState<{ [key: string]: string | File | null }>({
     category: "",
-    file: "",
+    file: null,
   });
 
   const [error, setError] = useState<boolean>(false);
@@ -37,10 +37,6 @@ function Category() {
       if (inputs.file instanceof File) {
         formData.append("file", inputs.file);
       }
-
-       for (const pair of formData.entries()) {
-         console.log(pair[0] + ": " + pair[1]);
-       }
 
 
       await createCategory(formData).then((response: any) => {
@@ -60,7 +56,8 @@ function Category() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     fieldName: string
   ) => {
-    const value = e.target.type === "file" ? e.target.files[0] : e.target.value;
+    const target = e.target as HTMLInputElement; // Aserto de tipo para HTMLInputElement
+    const value = target.type === "file" ? (target.files ? target.files[0] : null) : target.value;
     setInputs({ ...inputs, [fieldName]: value });
   };
 

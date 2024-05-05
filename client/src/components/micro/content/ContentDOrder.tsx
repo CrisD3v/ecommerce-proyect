@@ -12,6 +12,20 @@ import { jwtDecode } from "jwt-decode";
 import CardProduct from "../cards/CardProduct";
 import CardOrder from "../cards/CardOrder";
 
+interface OrderResult {
+  UserId: any;
+  state: boolean;
+  data: any;
+}
+
+interface Product {
+  id: any;
+  price: any;
+  name: string;
+  code: string;
+  image: string;
+}
+
 function ContentDOrder() {
   const cookies = new Cookies();
   const token = cookies.get("token_user");
@@ -20,12 +34,12 @@ function ContentDOrder() {
   const orderQueryResult = useGetOrderQuery();
   const [iduser, setIdUser] = useState("");
   const {
-    data: response,
+    data: response = [] as OrderResult[],
     isLoading,
     isError,
   } = token ? orderQueryResult : { data: null, isLoading: null, isError: null };
   const {
-    data: dataProduct,
+    data: dataProduct = [] as Product[],
     isLoading: isLoading2,
     isError: isError2,
   } = useGetProductsQuery();
@@ -37,49 +51,62 @@ function ContentDOrder() {
 
   const handleSearchInputChange = (event: any) => {};
 
-const handleSearchInputKeyPress = (
-  event: React.KeyboardEvent<HTMLInputElement>
-) => {
-  if (event.key === "Enter") {
+  const handleSearchInputKeyPress = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (event.key === "Enter") {
+      const value = (event.target as HTMLInputElement).value;
+      setIdUser(value);
+      console.log(value);
+
+      const productsFiltered = (response as OrderResult[])?.find(
+        (el) => el.UserId === value
+      );
+      if (productsFiltered && productsFiltered.state === true) {
+        const arrayFromValues = Object.values(productsFiltered.data);
+        if (arrayFromValues.length > 0) {
+          const jsonStringWithoutArray = arrayFromValues[0];
+          if (typeof jsonStringWithoutArray === 'string') {
+            const jsonArray = JSON.parse(jsonStringWithoutArray);
+            setProductsOrder(jsonArray);
+          } else {
+            console.error('Expected a string for JSON parsing, received:', jsonStringWithoutArray);
+          }
+        }
+      } else {
+        setProductsOrder([]);
+        setOrdersOrNot("NO HAY ORDENES DE COMPRA REGISTRADOS A ESTE USUARIO");
+      }
+    }
+  };
+
+  const handleSearchInputClick = (event: any) => {
     const value = (event.target as HTMLInputElement).value;
     setIdUser(value);
     console.log(value);
 
-
-    const productsFiltered = response?.find((el) => el.UserId === value);
+    const productsFiltered = (response as OrderResult[])?.find(
+      (el) => el.UserId === value
+    );
     if (productsFiltered && productsFiltered.state === true) {
       const arrayFromValues = Object.values(productsFiltered.data);
       if (arrayFromValues.length > 0) {
         const jsonStringWithoutArray = arrayFromValues[0];
-        const jsonArray = JSON.parse(jsonStringWithoutArray);
-        setProductsOrder(jsonArray);
+        if (typeof jsonStringWithoutArray === "string") {
+          const jsonArray = JSON.parse(jsonStringWithoutArray);
+          setProductsOrder(jsonArray);
+        } else {
+          console.error(
+            "Expected a string for JSON parsing, received:",
+            jsonStringWithoutArray
+          );
+        }
       }
     } else {
       setProductsOrder([]);
       setOrdersOrNot("NO HAY ORDENES DE COMPRA REGISTRADOS A ESTE USUARIO");
     }
-  }
-};
-
-const handleSearchInputClick = (event: any) => {
-  const value = (event.target as HTMLInputElement).value;
-  setIdUser(value);
-  console.log(value);
-
-  const productsFiltered = response?.find((el) => el.UserId === value);
-  if (productsFiltered && productsFiltered.state === true) {
-    const arrayFromValues = Object.values(productsFiltered.data);
-    if (arrayFromValues.length > 0) {
-      const jsonStringWithoutArray = arrayFromValues[0];
-      const jsonArray = JSON.parse(jsonStringWithoutArray);
-      setProductsOrder(jsonArray);
-    }
-  } else {
-    setProductsOrder([]);
-    setOrdersOrNot("NO HAY ORDENES DE COMPRA REGISTRADOS A ESTE USUARIO");
-  }
-};
-
+  };
 
   const productsWithQuantity: { [key: number]: number } = {};
   // Array para mantener el orden de los IDs
@@ -96,7 +123,7 @@ const handleSearchInputClick = (event: any) => {
 
   // Calcular el total del carrito
   const total = orderedIds.reduce((acc, productId) => {
-    const product = dataProduct.find((product) => product.id === productId);
+    const product = (dataProduct as Product[]).find((product) => product.id === productId);
     const quantity = productsWithQuantity[productId];
     return acc + (product?.price || 0) * quantity;
   }, 0);
@@ -178,9 +205,10 @@ const handleSearchInputClick = (event: any) => {
             <div className="w-max-[95rem] flex flex-wrap flex-row h-[37rem] gap-10 mt-9 overflow-y-auto transition-all ease-in-out duration-300">
               {/* Aquí va el contenido si productsOrder tiene elementos */}
               {orderedIds.map((productId, i) => {
-                const product = dataProduct.find(
+                const product = (dataProduct as Product[]).find(
                   (product) => product.id === productId
                 );
+                if (!product) return null;
                 const quantity = productsWithQuantity[productId];
                 return (
                   <div className="" key={i}>

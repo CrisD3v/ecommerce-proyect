@@ -12,13 +12,7 @@ const FormDTienda: React.FC = () => {
     console.log("Formulario enviado:", inputs);
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    fieldName: string
-  ) => {
-    const value = e.target.type === "file" ? e.target.files[0] : e.target.value;
-    setInputs({ ...inputs, [fieldName]: value });
-  };
+ 
 
   return (
     <div className="container mx-auto flex justify-center flex-col h-96 mt-44">
@@ -39,7 +33,6 @@ const FormDTienda: React.FC = () => {
               type="text"
               id="nameShop"
               value={inputs["nameShop"]}
-              onChange={(e) => handleChange(e, "nameShop")}
               className="mt-2 block w-full border-2 outline-none border-gray-300 p-2 rounded-md shadow-sm hover:border-cyan-300 focus:ring-cyan-400 focus:border-cyan-400 sm:text-sm transition-all ease-in-out duration-300"
               placeholder="Nombre de Tienda"
             />
@@ -55,7 +48,6 @@ const FormDTienda: React.FC = () => {
               name="logoTipo"
               type="file"
               id="logoTipo"
-              onChange={(e) => handleChange(e, "logoTipo")}
               className="mt-2 block w-full border-2 outline-none p-2 border-gray-300 rounded-md shadow-sm hover:border-cyan-300 focus:ring-cyan-400 focus:border-cyan-400 sm:text-sm"
             />
           </div>

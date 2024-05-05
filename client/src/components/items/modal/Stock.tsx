@@ -26,7 +26,9 @@ function Stock() {
     { name: "file", label: "Imagen del producto", type: "file" },
   ];
 
-  const [inputs, setInputs] = useState<{ [key: string]: string | File | boolean}>({
+  const [inputs, setInputs] = useState<{
+    [key: string]: string | File | boolean;
+  }>({
     name: "",
     price: "",
     stock: "",
@@ -45,19 +47,23 @@ function Stock() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     const formData = new FormData();
-    formData.append("name", inputs.name);
-    formData.append("price", inputs.price);
-    formData.append("stock", inputs.stock);
-    formData.append("code", inputs.code);
-    formData.append("description", inputs.description);
-
+    if (typeof inputs.name === "string") {
+      formData.append("name", inputs.name);
+    }
+    if (typeof inputs.price === "string") {
+      formData.append("price", inputs.price);
+    }
+    if (typeof inputs.stock === "string") {
+      formData.append("stock", inputs.stock);
+    }
+    if (typeof inputs.code === "string") {
+      formData.append("code", inputs.code);
+    }
     if (inputs.file instanceof File) {
       formData.append("file", inputs.file);
     }
-
-    // Suponiendo que formData es tu objeto FormData
-    for (const pair of formData.entries()) {
-      console.log(pair[0] + ": " + pair[1]);
+    if (typeof inputs.description === "string") {
+      formData.append("description", inputs.description);
     }
 
     e.preventDefault();
@@ -88,7 +94,11 @@ function Stock() {
       value = e.target.value.slice(0, 14);
     } else {
       // Para otros campos, simplemente asignar el valor
-      value = e.target.type === "file" ? e.target.files[0] : e.target.value;
+      if (e.target instanceof HTMLInputElement && e.target.type === "file") {
+        value = e.target.files ? e.target.files[0] : e.target.value;
+      } else {
+        value = e.target.value;
+      }
     }
     setInputs((prevInputs) => ({
       ...prevInputs,
@@ -165,8 +175,8 @@ function Stock() {
               <textarea
                 name="description"
                 id=""
-                cols="30"
-                rows="10"
+                cols={30}
+                rows={10}
                 onChange={(e) => handleChange(e, "description")}
                 className="mt-2 block w-full border-2 outline-none border-gray-300 p-2 rounded-md shadow-sm hover:border-cyan-300 focus:ring-cyan-400 focus:border-cyan-400 sm:text-sm transition-all ease-in-out duration-300"
               ></textarea>

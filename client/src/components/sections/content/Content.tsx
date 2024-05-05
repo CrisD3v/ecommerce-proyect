@@ -23,10 +23,27 @@ interface Props {
   type: string;
 }
 
+interface Product {
+  id: any;
+  price: any;
+  name: string;
+  code: string;
+  image: string;
+  description: string;
+  stock: string;
+}
+
+interface Category {
+  id: any;
+  category: string;
+  image: string;
+}
+
+
 function Home() {
-  const { data: dataCategory, isLoading, isError } = useGetCategoryQuery();
+  const { data: dataCategory = [] as Category[], isLoading, isError } = useGetCategoryQuery();
   const {
-    data: dataProduct,
+    data: dataProduct = [] as Product[],
     isLoading: isLoading2,
     isError: isError2,
   } = useGetProductsQuery();
@@ -53,7 +70,7 @@ function Home() {
           </div>
 
           <div className="flex flex-wrap mt-5 gap-20">
-            {dataProduct
+            {(dataProduct as Product[])
               ?.slice(-4)
               .reverse()
               .map((el, i) => (
@@ -86,7 +103,7 @@ function Home() {
           </div>
         </div>
         <div className="flex flex-wrap gap-5">
-          {dataCategory?.map((el, i) =>
+          {(dataCategory as Category[])?.map((el, i) =>
             i <= 2 ? (
               <CardCategory
                 category={el.category}
@@ -102,7 +119,7 @@ function Home() {
 }
 
 function Category() {
-  const { data: dataProduct, isLoading, isError } = useGetProductsQuery();
+  const { data: dataProduct = [] as Product[], isLoading, isError } = useGetProductsQuery();
   const isClicked = useAppSelector((state) => state.isClicked.isClicked);
   const dispatch = useAppDispatch();
   const handleClick = () => {
@@ -152,7 +169,7 @@ function Category() {
           </Link>
         </div>
         <div className="flex flex-wrap mt-5 gap-20">
-          {dataProduct
+          {(dataProduct as Product[])
             ?.slice()
             .reverse()
             .map((el, i) => (

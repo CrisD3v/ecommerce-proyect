@@ -115,7 +115,7 @@ function Stock() {
 
   return (
     <div>
-      <div className="w-full flex justify-center items-center">
+      <div className="w-full xl:h-full flex justify-center items-center">
         <div className="error">
           <span>{errors}</span>
         </div>
@@ -176,7 +176,7 @@ function Stock() {
                 name="description"
                 id=""
                 cols={30}
-                rows={10}
+                rows={5}
                 onChange={(e) => handleChange(e, "description")}
                 className="mt-2 block w-full border-2 outline-none border-gray-300 p-2 rounded-md shadow-sm hover:border-cyan-300 focus:ring-cyan-400 focus:border-cyan-400 sm:text-sm transition-all ease-in-out duration-300"
               ></textarea>

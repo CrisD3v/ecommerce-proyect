@@ -153,7 +153,7 @@ function SideCart({ onClose }: Props) {
             CARRITO DE COMPRAS
           </h2>
         </div>
-        <div className="flex items-center justify-center overflow-y-auto h-[53rem] flex-wrap gap-5">
+        <div className="flex items-center justify-center overflow-y-auto h-[53rem] xl:h-[44.5rem] flex-wrap gap-5">
           {orderedIds.map((productId, i) => {
             const product = (dataProduct as Product[]).find(
               (product) => product.id === productId

@@ -163,12 +163,12 @@ function ContentDOrder() {
   return (
     <div className="container mx-auto select-none">
       <div className="w-[70rem] ">
-        <h2 className="text-2xl text-center ml-96 font-semibold mb-4">
+        <h2 className="text-2xl text-center ml-96 xl:-ml-20 font-semibold mb-4">
           BUSCAR ORDENES DE COMPRA
         </h2>
         {/* Aquí va el formulario para subir, editar y eliminar categorías */}
         <div className="w-full">
-          <div className="w-full flex justify-center gap-10 ml-[12.1rem]">
+          <div className="w-full flex justify-center gap-10 ml-[12.1rem] xl:-ml-11">
             <div className="w-max">
               <InputSearch
                 placeHolder="INGRESA EL CODIGO DE USUARIO"
@@ -184,7 +184,7 @@ function ContentDOrder() {
 
         {productsOrder.length > 0 && orderedIds.length > 0 ? (
           <div>
-            <div className="flex flex-row gap-20 justify-center ml-[24rem] mt-12 mb-12">
+            <div className="flex flex-row gap-20 justify-center ml-[24rem] xl:-ml-[6.5rem]  mt-12 mb-12">
               <div className="">
                 <button
                   className="p-4 w-36 border  rounded-md text-white font-bold bg-green-400"
@@ -202,7 +202,7 @@ function ContentDOrder() {
                 </button>
               </div>
             </div>
-            <div className="w-max-[95rem] flex flex-wrap flex-row h-[37rem] gap-10 mt-9 overflow-y-auto transition-all ease-in-out duration-300">
+            <div className="w-max-[95rem] xl:w-[60rem] xl:ml-20 xl:h-[34.7rem] flex flex-wrap flex-row h-[37rem] gap-10 mt-9 overflow-y-auto transition-all ease-in-out duration-300">
               {/* Aquí va el contenido si productsOrder tiene elementos */}
               {orderedIds.map((productId, i) => {
                 const product = (dataProduct as Product[]).find(
@@ -231,7 +231,7 @@ function ContentDOrder() {
             </div>
           </div>
         ) : (
-          <div className="w-max-[95rem] h-[37rem] ml-[24rem] flex justify-center items-center">
+          <div className="w-max-[95rem] xl:w-[60rem] xl:ml-14 h-[37rem] ml-[24rem] flex justify-center items-center">
             <p className="text-2xl font-bold text-center">{ordersOrNot}</p>
           </div>
         )}

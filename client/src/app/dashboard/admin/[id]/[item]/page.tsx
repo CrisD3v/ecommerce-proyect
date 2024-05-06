@@ -21,7 +21,7 @@ function page({ params }: { params: { id: string , item: string} }) {
             </div>
           </div>
         </div>
-        <div className="">
+        <div className="w-screen">
           {/* CONTENIDO */}
           {params.item === "tienda" && <ContentDTienda />}
           {params.item === "stock" && <ContentDStock />}

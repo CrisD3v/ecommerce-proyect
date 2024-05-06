@@ -31,12 +31,12 @@ function ContentDStock() {
   return (
     <div className="container mx-auto">
       <div className="w-[70rem] ">
-        <h2 className="text-2xl text-center ml-96 font-semibold mb-4">
+        <h2 className="text-2xl text-center ml-96 xl:-ml-20 font-semibold mb-4">
           ADMINISTRAR STOCK
         </h2>
         {/* Aquí va el formulario para subir, editar y eliminar categorías */}
         <div className="w-full">
-          <div className="w-full flex justify-center gap-10 ml-48">
+          <div className="w-full flex justify-center gap-10 ml-48 xl:-ml-10">
             <button
               onClick={() => openModalCreate()}
               className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-cyan-400 hover:bg-cyan-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-200"
@@ -46,8 +46,8 @@ function ContentDStock() {
           </div>
           <div
             className={`${
-              isOpenMenu ? "w-[98.5rem]" : "w-[105rem]"
-            } flex flex-wrap h-[47rem] mt-20 gap-20 overflow-y-auto transition-all ease-in-out duration-500`}
+              isOpenMenu ? "w-[98.5rem] xl:w-[60rem]" : "w-[105rem] xl:w-[73rem]"
+          } flex flex-wrap h-[47rem] xl:h-[39.5rem] mt-20 ml-20 xl:ml-20 gap-20 overflow-y-auto transition-all ease-in-out duration-500`}
           >
             {(dataProduct as Product[])
               ?.slice()

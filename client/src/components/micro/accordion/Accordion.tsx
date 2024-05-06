@@ -64,7 +64,7 @@ const MyAccordion: React.FC<props> = ({ data, loading }) => {
   return (
     <div
       className={`${
-        isOpenMenu ? "w-[75rem]" : "w-[88rem]"
+        isOpenMenu ? "w-[75rem] xl:w-[44rem]" : "w-[88rem]"
       } transition-all ease-in-out duration-500`}
     >
       {loading ? (

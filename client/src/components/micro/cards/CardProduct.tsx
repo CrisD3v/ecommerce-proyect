@@ -77,7 +77,7 @@ function CardProduct({ image, name, price, id }: Props) {
   }).format(Number(price));
 
   return (
-    <div className="w-[18rem] bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300 border">
+    <div className="w-[18rem] xl:w-[15rem] bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300 border">
       {/* <Image
         className="w-full h-48 object-cover object-center select-none"
         src="https://via.placeholder.com/300x200"

@@ -26,7 +26,7 @@ function StockModal({onClose}:ModalProps) {
    }, [onClose]);
    return (
      <div className="fixed inset-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center">
-       <div id="modal" className="bg-white w-4/12 p-8 rounded-2xl shadow-md">
+       <div id="modal" className="bg-white w-4/12 xl:h-[50rem] p-8 rounded-2xl shadow-md">
          {/* Contenido del modal */}
          <Stock  key={1}/>
          {/* Botón para cerrar el modal */}

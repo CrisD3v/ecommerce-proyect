@@ -23,7 +23,6 @@ routesSubCategory.put(
 );
 routesSubCategory.get(
   "/get",
-  authMiddleware.verifyToken,
   subCategoriesController.getAllSubCategories
 );
 

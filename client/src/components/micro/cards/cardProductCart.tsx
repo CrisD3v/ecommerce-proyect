@@ -80,7 +80,6 @@ function CardProductCart({ image, name, price, id, cantidad }: Props) {
   const removeFromCart = (productId: number) => {
     dispatch(removeProductId(productId)); // Enviar el id del producto a la acción para eliminarlo del carrito
   };
-
   const removeCantFromCart = (productId: number) => {
     dispatch(removeProductCantId(productId)); // Enviar el id del producto a la acción para eliminarlo del carrito
     if (token) {

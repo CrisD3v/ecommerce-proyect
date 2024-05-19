@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
   useGetProductsQuery,
-  useGetStoreQuery,
   useCreateOrderMutation,
   useCleanCartMutation,
+  useGetUserQuery,
 } from "@/redux/services/ecommerceApi";
 import CardProductCart from "@/components/micro/cards/cardProductCart";
 import { XMarkIcon } from "@heroicons/react/24/outline";
@@ -40,11 +40,6 @@ function SideCart({ onClose }: Props) {
   const user_id = token ? (jwtDecode(token) as JwtPayload).id ?? null : null;
   const productArrState = useAppSelector((state) => state.setProduct.ids); // Obtener el array del estado
   const dispatch = useAppDispatch();
-  const {
-    data: productArrBD = [] as Store[],
-    isLoading: isLoading2,
-    isError: isError2,
-  } = useGetStoreQuery(); // Obtener el array del estado en BD
   const {
     data: dataProduct = [] as Product[],
     isLoading,
@@ -153,7 +148,7 @@ function SideCart({ onClose }: Props) {
             CARRITO DE COMPRAS
           </h2>
         </div>
-        <div className="flex items-center justify-center overflow-y-auto h-[53rem] xl:h-[44.5rem] flex-wrap gap-5">
+        <div className="flex items-center justify-center overflow-y-auto h-[53rem] xl:h-[38rem] flex-wrap gap-5">
           {orderedIds.map((productId, i) => {
             const product = (dataProduct as Product[]).find(
               (product) => product.id === productId

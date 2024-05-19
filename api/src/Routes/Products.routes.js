@@ -11,7 +11,11 @@ routesProduct.post(
   upload.single("file"), // Middleware de multer para procesar un solo archivo
   productController.postProduct
 );
-routesProduct.put("/updateProduct/:id", productController.updateProduct);
+routesProduct.put(
+  "/updateProduct/:id",
+  upload.single("file"), // Middleware de multer para procesar un solo archivo
+  productController.updateProduct
+);
 routesProduct.put(
   "/deleteOrInactiveProduct/:id",
   productController.deleteProduct

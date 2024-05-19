@@ -9,6 +9,7 @@ interface props {
   code: string;
   description: string;
   stock: string;
+  openModalEdit: () => void;
 }
 
 function CardProductsAdm({
@@ -18,6 +19,7 @@ function CardProductsAdm({
   code,
   description,
   stock,
+  openModalEdit,
 }: props) {
   const URL_BASE = process.env.URL_BASE;
   const formattedPrice = new Intl.NumberFormat("es-CO", {
@@ -25,7 +27,10 @@ function CardProductsAdm({
     currency: "COP",
   }).format(Number(price));
   return (
-    <div className="w-72 xl:w-[15rem] h-[28rem] cursor-pointer bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300 border">
+    <div
+      className="w-72 xl:w-[15rem] h-[28rem] cursor-pointer bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300 border"
+      onClick={openModalEdit}
+    >
       {/* <Image
         className="w-full h-48 object-cover object-center select-none"
         src="https://via.placeholder.com/300x200"

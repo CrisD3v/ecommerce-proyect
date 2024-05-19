@@ -6,7 +6,7 @@ import React from "react";
 
 function page({ params }: { params: { id: string , item: string} }) {
   return (
-    <div className="flex flex-row w-full overflow-hidden h-screen">
+    <div className="flex flex-row w-full overflow-hidden h-screen bg-rose-50">
       {/* SIDEBAR CON HIDDEN */}
       <div className="">
         <SideBar item={params.item} />

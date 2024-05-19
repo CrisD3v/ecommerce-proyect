@@ -4,10 +4,10 @@ import Content from "../../components/sections/content/Content";
 
 function page() {
   return (
-    <div>
+    <div className="bg-rose-50">
       {/* NAV */}
       <div className="">
-        <Nav route="category"/>
+        <Nav route="category" />
       </div>
 
       {/* CONTENIDO */}

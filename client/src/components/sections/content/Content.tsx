@@ -47,7 +47,6 @@ function Home() {
     isLoading: isLoading2,
     isError: isError2,
   } = useGetProductsQuery();
-  console.log(dataProduct);
   return (
     <div className="grid grid-cols-12 m-10">
       <BannerCard />

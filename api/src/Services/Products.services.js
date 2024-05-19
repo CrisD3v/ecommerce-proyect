@@ -1,4 +1,4 @@
-const { Products } = require("../App/Db");
+const { Products, Categories, SubCategories } = require("../App/Db");
 
 const productServices = {
   createProducts: async (
@@ -8,19 +8,32 @@ const productServices = {
     stock,
     image,
     code,
-    active
+    active,
+    categoryId,
+    subCategoryId
   ) => {
-    const products = await Products.create({
-      name,
-      description,
-      price,
-      stock,
-      image,
-      code,
-      active
-    });
+    try {
+      const product = await Products.create({
+        name,
+        description,
+        price,
+        stock,
+        image,
+        code,
+        active,
+      });
 
-    return "El producto se ha añadido con exito.";
+      // Asignar la categoría al producto
+      await product.setCategory(categoryId);
+
+      // Asignar la subcategoría al producto
+      await product.addSubCategory(subCategoryId);
+
+      return "El producto se ha añadido con éxito.";
+    } catch (error) {
+      console.error("Error al crear el producto:", error);
+      throw new Error("Error al crear el producto.");
+    }
   },
 
   updateProducts: async (
@@ -29,8 +42,8 @@ const productServices = {
     price,
     stock,
     image,
-    type,
-    code,
+    category,
+    subCategory,
     id
   ) => {
     const productsEdit = await Products.update(
@@ -40,13 +53,31 @@ const productServices = {
         price,
         stock,
         image,
-        type,
-        code,
       },
       {
         where: { id: id },
       }
     );
+
+    // Obtener el producto actualizado
+    const updatedProduct = await Products.findByPk(id);
+
+    if (!updatedProduct) {
+      return "Producto no encontrado";
+    }
+
+    // Asignar la categoría al producto
+    await updatedProduct.setCategory(category);
+
+    if (subCategory.length > 2) {
+      subCategory = subCategory.split(",").map(Number);
+    }
+
+    // Actualizar las subcategorías del producto
+    if (subCategory && subCategory.length > 0) {
+      await updatedProduct.setSubCategories(subCategory);
+    }
+
     return "Los datos del producto han sido actualizados.";
   },
 
@@ -66,7 +97,12 @@ const productServices = {
   },
 
   getProducts: async () => {
-    const products = await Products.findAll();
+    const products = await Products.findAll({
+      include: [
+        { model: Categories, attributes: ["id", "category"] },
+        { model: SubCategories, attributes: ["id", "sub_category"] },
+      ],
+    });
 
     return products;
   },
@@ -91,5 +127,5 @@ const productServices = {
 };
 
 module.exports = {
-  productServices
+  productServices,
 };

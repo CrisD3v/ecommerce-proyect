@@ -47,6 +47,22 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
+      categoryId: {
+        type: DataTypes.INTEGER, // Suponiendo que el ID de la categoría es de tipo INTEGER
+        allowNull: true,
+        references: {
+          model: "Categories", // Nombre de la tabla de Categorías en tu base de datos
+          key: "id", // Campo de clave primaria en la tabla de Categorías
+        },
+      },
+      subCategoryId: {
+        type: DataTypes.INTEGER, // Suponiendo que el ID de la categoría es de tipo INTEGER
+        allowNull: true,
+        references: {
+          model: "SubCategories", // Nombre de la tabla de sub Categorías en tu base de datos
+          key: "id", // Campo de clave primaria en la tabla de  sub Categorías
+        },
+      },
     },
     {
       freezeTableName: true,

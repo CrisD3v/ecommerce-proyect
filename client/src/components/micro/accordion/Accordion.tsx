@@ -64,7 +64,7 @@ const MyAccordion: React.FC<props> = ({ data, loading }) => {
   return (
     <div
       className={`${
-        isOpenMenu ? "w-[75rem] xl:w-[44rem]" : "w-[88rem]"
+        isOpenMenu ? "w-[77rem] xl:w-[60rem]" : " xl:w-[47rem] w-[90rem]"
       } transition-all ease-in-out duration-500`}
     >
       {loading ? (
@@ -83,7 +83,11 @@ const MyAccordion: React.FC<props> = ({ data, loading }) => {
                   >
                     <p className="">{e.sub_category}</p>
                     <div className="">
-                      <Tooltip id="tooltip-edit2" content="EDITAR" place="top" />
+                      <Tooltip
+                        id="tooltip-edit2"
+                        content="EDITAR"
+                        place="top"
+                      />
 
                       <button
                         type="button"

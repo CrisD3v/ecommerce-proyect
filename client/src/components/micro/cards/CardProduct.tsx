@@ -56,13 +56,15 @@ function CardProduct({ image, name, price, id }: Props) {
       const userProduct = (productArrBD as Store[]).find(
         (product) => product.UserId === user_id
       );
-      const isUserProductExist = !!userProduct;
-
+      const isUserProductExist = !!productArr;
+      
       if (isUserProductExist) {
-        await updateStoreProduct({
-          id: userProduct.id,
-          products: [product_id],
-        });
+       if (userProduct) {
+         await updateStoreProduct({
+           id: userProduct.id,
+           products: [product_id],
+         });
+       }
       } else {
         await storeProduct(dataToSend);
       }

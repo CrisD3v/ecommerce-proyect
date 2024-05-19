@@ -16,7 +16,6 @@ const productCart = createSlice({
     },
     removeProductCantId: (state, action) => {
       const indexToRemove = state.ids.indexOf(action.payload); // Encontrar el índice del id a eliminar
-      console.log(action.payload)
       if (indexToRemove !== -1) {
         state.ids.splice(indexToRemove, 1); // Eliminar el id del array
       }

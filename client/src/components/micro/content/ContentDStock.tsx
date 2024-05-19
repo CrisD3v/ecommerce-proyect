@@ -1,10 +1,12 @@
 "use client";
 import React, { useState } from "react";
 import { setOpenModal } from "@/redux/features/modalSlice";
+import { setOpenModalCategory } from "@/redux/features/modalCategorySlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import StockModal from "../modal/StockModal";
 import { useGetProductsQuery } from "@/redux/services/ecommerceApi";
 import CardProductsAdm from "../cards/CardProductsAdm";
+import CategoryModal from "../modal/CategoryModal";
 
 interface Product {
   id: any;
@@ -18,6 +20,10 @@ interface Product {
 
 function ContentDStock() {
   const modalIsOpen = useAppSelector((state) => state.openModal.openModal);
+  const modalIsOpenCategory = useAppSelector(
+    (state) => state.openModalCategory.openModal
+  );
+  const [idProduct , setIdProduct] = useState('');
   const isOpenMenu = useAppSelector((state) => state.openMenu.openMenu);
   const {
     data: dataProduct = [] as Product[],
@@ -28,6 +34,12 @@ function ContentDStock() {
   const openModalCreate = () => {
     dispatch(setOpenModal());
   };
+  const openModalEdit = (id_product:any) => {
+    dispatch(setOpenModalCategory());
+    setIdProduct(id_product);
+  };
+
+    console.log(dataProduct);
   return (
     <div className="container mx-auto">
       <div className="w-[70rem] ">
@@ -46,8 +58,10 @@ function ContentDStock() {
           </div>
           <div
             className={`${
-              isOpenMenu ? "w-[98.5rem] xl:w-[60rem]" : "w-[105rem] xl:w-[73rem]"
-          } flex flex-wrap h-[47rem] xl:h-[39.5rem] mt-20 ml-20 xl:ml-20 gap-20 overflow-y-auto transition-all ease-in-out duration-500`}
+              isOpenMenu
+                ? "w-[98.5rem] xl:w-[60rem]"
+                : "w-[105rem] xl:w-[73rem]"
+            } flex flex-wrap h-[47rem] xl:h-[39.5rem] mt-20 ml-20 xl:ml-20 gap-20 overflow-y-auto transition-all ease-in-out duration-500`}
           >
             {(dataProduct as Product[])
               ?.slice()
@@ -61,6 +75,7 @@ function ContentDStock() {
                   description={el.description}
                   stock={el.stock}
                   key={i}
+                  openModalEdit={() => openModalEdit(el.id)}
                 />
               ))}
           </div>
@@ -68,6 +83,11 @@ function ContentDStock() {
       </div>
 
       {modalIsOpen ? <StockModal onClose={() => openModalCreate()} /> : ""}
+      {modalIsOpenCategory ? (
+        <CategoryModal onClose={() => openModalEdit(null)} idProduct={idProduct} />
+      ) : (
+        ""
+      )}
     </div>
   );
 }

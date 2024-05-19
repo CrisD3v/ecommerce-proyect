@@ -8,6 +8,7 @@ import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import { useAppDispatch } from "@/redux/hooks";
 import { setOpenMenu } from "@/redux/features/isClickedMenuSide";
+import Cookies from "universal-cookie";
 
 interface props {
   item: string;
@@ -15,6 +16,8 @@ interface props {
 
 function SideBar({ item }: props) {
   const dispatch = useAppDispatch();
+  const cookies = new Cookies();
+  const token = cookies.get("token_user");
   const [close, setClose] = useState(false);
   const handleHiddenMenu = () => {
     dispatch(setOpenMenu());
@@ -23,7 +26,7 @@ function SideBar({ item }: props) {
   };
   return (
     <div
-      className={`bg-blue-400 bg-opacity-10 h-screen transition-all duration-500 ease-in-out shadow-2xl ${
+      className={`bg-blue-400 bg-opacity-10 h-screen xl:h-[60rem] transition-all duration-500 ease-in-out shadow-2xl ${
         close ? "w-20" : "w-72"
       } overflow-hidden`}
     >

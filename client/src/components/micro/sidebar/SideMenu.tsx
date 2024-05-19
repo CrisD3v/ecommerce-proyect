@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   BuildingStorefrontIcon,
   InboxStackIcon,
@@ -12,6 +12,7 @@ import "react-tooltip/dist/react-tooltip.css";
 import Link from "next/link";
 import Cookies from "universal-cookie";
 import { jwtDecode } from "jwt-decode";
+import { useGetUserQuery } from "@/redux/services/ecommerceApi";
 
 interface props {
   isClose: boolean;
@@ -22,9 +23,35 @@ interface JwtPayload {
   id: string; // Ensure the 'id' type is correct as per your usage
 }
 
+interface User {
+  name: string;
+  RolId: number;
+}
+
 function SideMenu({ isClose, item }: props) {
   const cookies = new Cookies();
   const token = cookies.get("token_user");
+    const [userData, setUserData] = useState<User | null>(null);
+    const userQueryResult = useGetUserQuery({
+      id: token ? (jwtDecode(token) as JwtPayload).id ?? "" : "",
+    });
+    const {
+      data: response,
+      isLoading,
+      isError,
+    } = token
+      ? userQueryResult
+      : { data: null, isLoading: null, isError: null };
+
+    useEffect(() => {
+      if (token && !isLoading && !isError && response) {
+        if ("name" in response && "RolId" in response) {
+          setUserData(response as User);
+        } else {
+          console.error("La respuesta no tiene la forma esperada:", response);
+        }
+      }
+    }, [token, isLoading, isError, response]);
   const menuOptions = [
     {
       active: "TIENDA",
@@ -52,7 +79,7 @@ function SideMenu({ isClose, item }: props) {
     },
   ];
   return (
-    <div className="flex flex-col h-max select-none transition-all ease-out">
+    <div className="flex flex-col h-max xl:h-[40rem] select-none transition-all ease-out">
       <div className={`mt-40`}>
         {menuOptions.map((el, index) => (
           <div
@@ -115,7 +142,7 @@ function SideMenu({ isClose, item }: props) {
                   className={`${
                     isClose
                       ? "w-10 ease-in"
-                      : "w-7 group-hover:w-8 group-hover:transition-all group-hover:duration-200 group-hover:ease-in-out group-hover:text-xl transition-all ease-out duration-300"
+                      : "w-7  group-hover:transition-all transition-all ease-out duration-300"
                   }`}
                 />
               </span>
@@ -133,6 +160,7 @@ function SideMenu({ isClose, item }: props) {
             </div>
           </div>
         </Link>
+        <Link href={`/perfil/${token ? (jwtDecode(token) as JwtPayload).id ?? 0 : 0}`}>
         <div className="flex flex-row items-center cursor-pointer">
           <Tooltip id="tooltip-menu2" place="right" />
           <div
@@ -156,10 +184,11 @@ function SideMenu({ isClose, item }: props) {
           </div>
           <div className={`${isClose ? "invisible" : "visible"}`}>
             <p className="transition-opacity ease-in duration-1000">
-              {isClose ? "" : "CRISTIAN"}
+              {isClose ? "" : `${userData ? userData.name : ''}`}
             </p>
           </div>
         </div>
+        </Link>
       </div>
     </div>
   );

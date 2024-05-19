@@ -64,11 +64,21 @@ export const ecommerceApi = createApi({
         body: post,
       }),
     }),
+    getSubCategory: builder.query<string[], void>({
+      query: () => `/api/subCategories/get`,
+    }),
     CreateProduct: builder.mutation({
       query: (post) => ({
         url: "/api/products/upProduct",
         method: "POST",
         body: post,
+      }),
+    }),
+    updateProduct: builder.mutation<Product, { id: string; products: any }>({
+      query: ({ id, products }) => ({
+        url: `/api/products/updateProduct/${id}`,
+        method: "PUT",
+        body: products,
       }),
     }),
     getProducts: builder.query<string[], void>({
@@ -131,6 +141,7 @@ export const {
   useCreateCategoryMutation,
   useCreateSubCategoryMutation,
   useGetCategoryQuery,
+  useGetSubCategoryQuery,
   useCreateProductMutation,
   useGetProductsQuery,
   useGetStoreQuery,
@@ -141,4 +152,5 @@ export const {
   useFinalizeOrderMutation,
   useCancelOrderMutation,
   useCleanCartMutation,
+  useUpdateProductMutation
 } = ecommerceApi;

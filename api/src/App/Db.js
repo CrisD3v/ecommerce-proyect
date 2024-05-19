@@ -49,6 +49,8 @@ Orders.belongsTo(Users);
 Cart.belongsTo(Users);
 Categories.belongsToMany(SubCategories, { through: "c_s" });
 SubCategories.belongsToMany(Categories, { through: "c_s" });
+Products.hasMany(SubCategories);
+Products.belongsTo(Categories);
 
 // Exportar modelos y la conexión
 module.exports = {

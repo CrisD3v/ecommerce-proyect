@@ -79,11 +79,17 @@ function Nav({ route }: props) {
 
 
   const menuUser = [
-    { name: "Perfil", function: null, link: "" },
+    {
+      name: "Perfil",
+      function: null,
+      link: `/perfil/${token ? (jwtDecode(token) as JwtPayload).id ?? 0 : 0}`,
+    },
     {
       name: "Dashboard",
       function: null,
-      link: `/dashboard/admin/${token ? (jwtDecode(token) as JwtPayload).id ?? 0 : 0}/tienda`,
+      link: `/dashboard/admin/${
+        token ? (jwtDecode(token) as JwtPayload).id ?? 0 : 0
+      }/tienda`,
     },
     { name: "Cerrar sesión", function: () => logout(), link: "" }, // Sin los paréntesis después de logout
   ];

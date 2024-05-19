@@ -1,6 +1,7 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import isClickedSlice from "./features/isClickedSlice"; // Importa el reducer raíz de tu aplicación
 import openModal  from "./features/modalSlice"; // Importa el reducer raíz de tu aplicación
+import openModalCategory  from "./features/modalCategorySlice"; // Importa el reducer raíz de tu aplicación
 import openMenu  from "./features/isClickedMenuSide"; // Importa el reducer raíz de tu aplicación
 import openMenuCart from "./features/isClickedSideCart"; // Importa el reducer raíz de tu aplicación
 import productCart from "./features/productCartSlice"; // Importa el reducer raíz de tu aplicación
@@ -11,6 +12,7 @@ export const store = configureStore({
   reducer: {
     isClicked: isClickedSlice,
     openModal: openModal,
+    openModalCategory: openModalCategory,
     openMenu: openMenu,
     openMenuCart: openMenuCart,
     setProduct: productCart,

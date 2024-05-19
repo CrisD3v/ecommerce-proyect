@@ -9,17 +9,12 @@ import {
   PlusIcon,
   Squares2X2Icon,
 } from "@heroicons/react/20/solid";
+import { useGetCategoryQuery } from "@/redux/services/ecommerceApi";
 
 interface FilterOption {
   value: string;
   label: string;
   checked: boolean;
-}
-
-interface FilterSection {
-  id: string;
-  name: string;
-  options: FilterOption[];
 }
 
 interface SortOption {
@@ -33,6 +28,13 @@ interface SubCategory {
   href: string;
 }
 
+interface Category {
+  id: any;
+  category: string;
+  image: string;
+  SubCategories: any;
+}
+
 //TODO::hola
 
 const sortOptions: SortOption[] = [
@@ -43,43 +45,6 @@ const sortOptions: SortOption[] = [
   { name: "Price: High to Low", href: "#", current: false },
 ];
 
-const filters: FilterSection[] = [
-  {
-    id: "Tela",
-    name: "Tela",
-    options: [
-      { value: "white", label: "White", checked: false },
-      { value: "beige", label: "Beige", checked: false },
-      { value: "blue", label: "Blue", checked: true },
-      { value: "brown", label: "Brown", checked: false },
-      { value: "green", label: "Green", checked: false },
-      { value: "purple", label: "Purple", checked: false },
-    ],
-  },
-  {
-    id: "Tipo",
-    name: "Tipo",
-    options: [
-      { value: "new-arrivals", label: "New Arrivals", checked: false },
-      { value: "sale", label: "Sale", checked: false },
-      { value: "travel", label: "Travel", checked: true },
-      { value: "organization", label: "Organization", checked: false },
-      { value: "accessories", label: "Accessories", checked: false },
-    ],
-  },
-  {
-    id: "Size",
-    name: "Tamaño",
-    options: [
-      { value: "2l", label: "2L", checked: false },
-      { value: "6l", label: "6L", checked: false },
-      { value: "12l", label: "12L", checked: false },
-      { value: "18l", label: "18L", checked: false },
-      { value: "20l", label: "20L", checked: false },
-      { value: "40l", label: "40L", checked: true },
-    ],
-  },
-];
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -87,9 +52,11 @@ function classNames(...classes: string[]) {
 
 function Filter() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const { data: dataCategory = [] as Category[], isLoading, isError } = useGetCategoryQuery();
+  console.log(dataCategory);
 
   return (
-    <div className="bg-white">
+    <div className="bg-rose-50 select-none">
       <div>
         {/* Mobile filter dialog */}
         <Transition.Root show={mobileFiltersOpen} as={Fragment}>
@@ -139,18 +106,18 @@ function Filter() {
                   <form className="mt-4 border-t border-gray-200">
                     <h3 className="sr-only">Categories</h3>
 
-                    {filters.map((section) => (
+                    {(dataCategory as Category[]).map((section) => (
                       <Disclosure
                         as="div"
                         key={section.id}
-                        className="border-t border-gray-200 px-4 py-6"
+                        className="border-t border-gray-200 px-4 py-6 select-none"
                       >
                         {({ open }) => (
                           <>
                             <h3 className="-mx-2 -my-3 flow-root">
                               <Disclosure.Button className="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500">
                                 <span className="font-medium text-gray-900">
-                                  {section.name}
+                                  {section.category}
                                 </span>
                                 <span className="ml-6 flex items-center">
                                   {open ? (
@@ -169,27 +136,29 @@ function Filter() {
                             </h3>
                             <Disclosure.Panel className="pt-6">
                               <div className="space-y-6">
-                                {section.options.map((option, optionIdx) => (
-                                  <div
-                                    key={option.value}
-                                    className="flex items-center"
-                                  >
-                                    <input
-                                      id={`filter-mobile-${section.id}-${optionIdx}`}
-                                      name={`${section.id}[]`}
-                                      defaultValue={option.value}
-                                      type="checkbox"
-                                      defaultChecked={option.checked}
-                                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                    />
-                                    <label
-                                      htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
-                                      className="ml-3 min-w-0 flex-1 text-gray-500"
+                                {section.SubCategories.map(
+                                  (option: any, optionIdx: any) => (
+                                    <div
+                                      key={option.value}
+                                      className="flex items-center"
                                     >
-                                      {option.label}
-                                    </label>
-                                  </div>
-                                ))}
+                                      <input
+                                        id={`filter-mobile-${section.id}-${optionIdx}`}
+                                        name={`${section.id}[]`}
+                                        defaultValue={option.value}
+                                        type="checkbox"
+                                        defaultChecked={option.checked}
+                                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                      />
+                                      <label
+                                        htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
+                                        className="ml-3 min-w-0 flex-1 text-gray-500"
+                                      >
+                                        {option.sub_category}
+                                      </label>
+                                    </div>
+                                  )
+                                )}
                               </div>
                             </Disclosure.Panel>
                           </>
@@ -280,7 +249,7 @@ function Filter() {
               <form className="hidden lg:block">
                 <h3 className="sr-only">Categories</h3>
 
-                {filters.map((section) => (
+                {(dataCategory as Category[]).map((section) => (
                   <Disclosure
                     as="div"
                     key={section.id}
@@ -291,7 +260,7 @@ function Filter() {
                         <h3 className="-my-3 flow-root">
                           <Disclosure.Button className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
                             <span className="font-medium text-gray-900">
-                              {section.name}
+                              {section.category}
                             </span>
                             <span className="ml-6 flex items-center">
                               {open ? (
@@ -310,27 +279,29 @@ function Filter() {
                         </h3>
                         <Disclosure.Panel className="pt-6">
                           <div className="space-y-4">
-                            {section.options.map((option, optionIdx) => (
-                              <div
-                                key={option.value}
-                                className="flex items-center"
-                              >
-                                <input
-                                  id={`filter-${section.id}-${optionIdx}`}
-                                  name={`${section.id}[]`}
-                                  defaultValue={option.value}
-                                  type="checkbox"
-                                  defaultChecked={option.checked}
-                                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                />
-                                <label
-                                  htmlFor={`filter-${section.id}-${optionIdx}`}
-                                  className="ml-3 text-sm text-gray-600"
+                            {section.SubCategories.map(
+                              (option: any, optionIdx: any) => (
+                                <div
+                                  key={option.value}
+                                  className="flex items-center"
                                 >
-                                  {option.label}
-                                </label>
-                              </div>
-                            ))}
+                                  <input
+                                    id={`filter-${section.id}-${optionIdx}`}
+                                    name={`${section.id}[]`}
+                                    defaultValue={option.value}
+                                    type="checkbox"
+                                    defaultChecked={option.checked}
+                                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                  />
+                                  <label
+                                    htmlFor={`filter-${section.id}-${optionIdx}`}
+                                    className="ml-3 text-sm text-gray-600"
+                                  >
+                                    {option.sub_category}
+                                  </label>
+                                </div>
+                              )
+                            )}
                           </div>
                         </Disclosure.Panel>
                       </>

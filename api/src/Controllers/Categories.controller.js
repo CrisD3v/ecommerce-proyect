@@ -18,9 +18,12 @@ const categoriesController = {
     try {
       const { id } = req.params;
       const { category, active } = req.body;
+      const image = req.file.filename;
+
       const categories = await categoriesServices.updateCategory(
         category,
         active,
+        image,
         id
       );
       res.status(200).json(categories);

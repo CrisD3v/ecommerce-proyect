@@ -16,6 +16,16 @@ interface Order {
   order: any;
 }
 
+interface Categories {
+  id:any
+  data: any;
+}
+
+interface SubCategories {
+  id: any;
+  data: any;
+}
+
 interface Cart {
   idUser: string;
 }
@@ -54,6 +64,13 @@ export const ecommerceApi = createApi({
         body: post,
       }),
     }),
+    editCategory: builder.mutation<Categories, { id: any; data: any }>({
+      query: ({ id, data }) => ({
+        url: `/api/categories/update/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
     getCategory: builder.query<string[], void>({
       query: () => `/api/categories/get`,
     }),
@@ -64,6 +81,15 @@ export const ecommerceApi = createApi({
         body: post,
       }),
     }),
+    editSubCategory: builder.mutation<SubCategories, { id: any; data: any }>(
+      {
+        query: ({ id, data }) => ({
+          url: `/api/subCategories/update/${id}`,
+          method: "PUT",
+          body: data,
+        }),
+      }
+    ),
     getSubCategory: builder.query<string[], void>({
       query: () => `/api/subCategories/get`,
     }),
@@ -152,5 +178,7 @@ export const {
   useFinalizeOrderMutation,
   useCancelOrderMutation,
   useCleanCartMutation,
-  useUpdateProductMutation
+  useUpdateProductMutation,
+  useEditCategoryMutation,
+  useEditSubCategoryMutation
 } = ecommerceApi;

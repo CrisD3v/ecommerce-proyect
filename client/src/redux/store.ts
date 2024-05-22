@@ -5,6 +5,7 @@ import openModalCategory  from "./features/modalCategorySlice"; // Importa el re
 import openMenu  from "./features/isClickedMenuSide"; // Importa el reducer raíz de tu aplicación
 import openMenuCart from "./features/isClickedSideCart"; // Importa el reducer raíz de tu aplicación
 import productCart from "./features/productCartSlice"; // Importa el reducer raíz de tu aplicación
+import getIdData from "./features/getIdData"; // Importa el reducer raíz de tu aplicación
 import { ecommerceApi } from "./services/ecommerceApi"; // Importa el reducer raíz de tu aplicación
 import { setupListeners } from "@reduxjs/toolkit/query";
 
@@ -16,6 +17,7 @@ export const store = configureStore({
     openMenu: openMenu,
     openMenuCart: openMenuCart,
     setProduct: productCart,
+    getIdData: getIdData,
     [ecommerceApi.reducerPath]: ecommerceApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>

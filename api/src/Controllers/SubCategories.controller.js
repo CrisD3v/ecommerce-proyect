@@ -18,10 +18,11 @@ const subCategoriesController = {
   updateSubCategory: async (req, res) => {
     try {
       const { id } = req.params;
-      const { sub_category, active } = req.body;
+      const { sub_category, category, active } = req.body;
       const subCategories = await subCategoriesServices.updateSubCategory(
         sub_category,
         active,
+        category,
         id
       );
       res.status(200).json(subCategories);

@@ -2,15 +2,29 @@ import React, { useState } from "react";
 import { ChevronDownIcon, PencilSquareIcon } from "@heroicons/react/20/solid";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
-import { useAppSelector } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { idCategory, idSubCategory } from "@/redux/features/getIdData";
 
 interface AccordionProps {
   title: string;
   children: React.ReactNode; // Agregamos esta línea para incluir children en las props
+  functionCategory: () => void;
+  id: any;
 }
 
-const Accordion: React.FC<AccordionProps> = ({ title, children }) => {
+const Accordion: React.FC<AccordionProps> = ({
+  title,
+  children,
+  functionCategory,
+  id,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const dispatch = useAppDispatch();
+
+  const getIdCategories = () => {
+    dispatch(idCategory(id));
+  };
 
   const toggleAccordion = () => {
     setIsOpen(!isOpen);
@@ -24,6 +38,10 @@ const Accordion: React.FC<AccordionProps> = ({ title, children }) => {
           type="button"
           className="px-4 py-4 text-cyan-400"
           data-tooltip-id="tooltip-edit"
+          onClick={() => {
+            functionCategory();
+            getIdCategories();
+          }}
         >
           <PencilSquareIcon className="w-5" />
         </button>
@@ -57,10 +75,22 @@ const Accordion: React.FC<AccordionProps> = ({ title, children }) => {
 interface props {
   data: any;
   loading: any;
+  functionSubCategory: () => void;
+  functionCategory: () => void;
 }
 
-const MyAccordion: React.FC<props> = ({ data, loading }) => {
+const MyAccordion: React.FC<props> = ({
+  data,
+  loading,
+  functionCategory,
+  functionSubCategory,
+}) => {
   const isOpenMenu = useAppSelector((state) => state.openMenu.openMenu);
+  const dispatch = useAppDispatch();
+
+  const getIdSubCategories = (id: any) => {
+    dispatch(idSubCategory(id));
+  };
   return (
     <div
       className={`${
@@ -74,7 +104,11 @@ const MyAccordion: React.FC<props> = ({ data, loading }) => {
       ) : (
         data.map((el: any, index: number) => (
           <div className="" key={index}>
-            <Accordion title={el.category}>
+            <Accordion
+              title={el.category}
+              functionCategory={() => functionCategory()}
+              id={el.id}
+            >
               {el.SubCategories && el.SubCategories.length > 0 ? (
                 el.SubCategories.map((e: any, i: number) => (
                   <div
@@ -93,6 +127,10 @@ const MyAccordion: React.FC<props> = ({ data, loading }) => {
                         type="button"
                         className="p-2 text-white bg-cyan-400 rounded-md"
                         data-tooltip-id="tooltip-edit2"
+                        onClick={() => {
+                          functionSubCategory();
+                          getIdSubCategories(e.id);
+                        }}
                       >
                         <PencilSquareIcon className="w-4" />
                       </button>

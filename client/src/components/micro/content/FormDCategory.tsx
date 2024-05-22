@@ -45,7 +45,12 @@ const FormDCategory: React.FC<props> = ({data, isLoading}) => {
       </div>
 
       <div className="w-[90rem] xl:w-[60rem] flex flex-wrap flex-col h-[48rem] xl:h-[40rem] mt-9 overflow-y-auto transition-all ease-in-out duration-300">
-        <MyAccordion data={data} loading={isLoading} />
+        <MyAccordion
+          data={data}
+          loading={isLoading}
+          functionCategory={() => openModalCreate("EDITCATEGORIA")}
+          functionSubCategory={() => openModalCreate("EDITSUBCATEGORIA")}
+        />
       </div>
 
       {modalIsOpen ? (

@@ -7,9 +7,9 @@ const categoriesServices = {
     return "Se creo la categoria correctamente.";
   },
 
-  updateCategory: async (category, active, id) => {
+  updateCategory: async (category, active, image, id) => {
     const categorys = await Categories.update(
-      { category, active },
+      { category, image, active },
       { where: { id } }
     );
     if (active == false) {

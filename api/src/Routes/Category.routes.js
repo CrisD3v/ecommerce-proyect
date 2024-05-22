@@ -14,9 +14,10 @@ routesCategory.post(
   categoriesController.createCategory
 );
 routesCategory.put(
-    "/update/:id",
-    authMiddleware.verifyToken,
-    categoriesController.updateCategory
+  "/update/:id",
+  authMiddleware.verifyToken,
+  upload.single("file"), // Middleware de multer para procesar un solo archivo
+  categoriesController.updateCategory
 );
 routesCategory.put(
     "/delete/:id",

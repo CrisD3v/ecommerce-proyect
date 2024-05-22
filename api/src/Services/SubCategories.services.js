@@ -17,11 +17,22 @@ const subCategoriesServices = {
     return "Se creo la sub categoria correctamente.";
   },
 
-  updateSubCategory: async (sub_category, active, id) => {
+  updateSubCategory: async (sub_category, active, category, id) => {
     const subCategory = await SubCategories.update(
       { sub_category, active },
       { where: { id } }
     );
+
+    // Obtener el producto actualizado
+    const updatedSubCategory = await SubCategories.findByPk(id);
+
+    if (!updatedSubCategory) {
+      return "Sub Categoria no encontrada";
+    }
+
+    // Asignar la subcategoría a la categoría
+       await updatedSubCategory.setCategories([category]);
+
     if (active == false) {
       return "Se inhabilito la sub categoria correctamente.";
     }

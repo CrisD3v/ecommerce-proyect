@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Category from "@/components/items/modal/Category";
 import SubCategory from "@/components/items/modal/SubCategory";
+import EditCategory from "@/components/items/modal/EditCategory";
+import EditSubCategory from "@/components/items/modal/EditSubCategory";
 
 interface ModalProps {
   onClose: () => void;
@@ -29,7 +31,15 @@ const TiendaModal: React.FC<ModalProps> = ({ onClose, type }) => {
     <div className="fixed inset-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center">
       <div id="modal" className="bg-white w-96 p-8 rounded-2xl shadow-md">
         {/* Contenido del modal */}
-        {type == "CATEGORIA" ? <Category /> : <SubCategory />}
+        {type == "CATEGORIA" ? (
+          <Category />
+        ) : type == "SUBCATEGORIA" ? (
+          <SubCategory />
+        ) : type == "EDITCATEGORIA" ? (
+          <EditCategory />
+        ) : (
+          <EditSubCategory />
+        )}
         {/* Botón para cerrar el modal */}
         <button
           onClick={onClose}

@@ -57,6 +57,20 @@ export const ecommerceApi = createApi({
     getUser: builder.query<User, { id: string }>({
       query: ({ id }) => `api/users/getUser/${id}`,
     }),
+    signup: builder.mutation({
+      query: (post) => ({
+        url: "/api/users/signup",
+        method: "POST",
+        body: post,
+      }),
+    }),
+    editUser: builder.mutation<User, { id: any; data: any }>({
+      query: ({ id, data }) => ({
+        url: `/api/users/updateUsProfile/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
     createCategory: builder.mutation({
       query: (post) => ({
         url: "/api/categories/create",
@@ -81,15 +95,13 @@ export const ecommerceApi = createApi({
         body: post,
       }),
     }),
-    editSubCategory: builder.mutation<SubCategories, { id: any; data: any }>(
-      {
-        query: ({ id, data }) => ({
-          url: `/api/subCategories/update/${id}`,
-          method: "PUT",
-          body: data,
-        }),
-      }
-    ),
+    editSubCategory: builder.mutation<SubCategories, { id: any; data: any }>({
+      query: ({ id, data }) => ({
+        url: `/api/subCategories/update/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
     getSubCategory: builder.query<string[], void>({
       query: () => `/api/subCategories/get`,
     }),
@@ -180,5 +192,7 @@ export const {
   useCleanCartMutation,
   useUpdateProductMutation,
   useEditCategoryMutation,
-  useEditSubCategoryMutation
+  useEditSubCategoryMutation,
+  useSignupMutation,
+  useEditUserMutation
 } = ecommerceApi;

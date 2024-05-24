@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import SigIn from "@/components/sections/modal/SigIn";
 import SignUp from "@/components/sections/modal/SignUp";
+import MenuTabUsers from "../menus/MenuTabUsers";
 
 interface ModalProps {
   onClose: () => void;
@@ -24,7 +25,7 @@ const LoginModal: React.FC<ModalProps> = ({ onClose, type }) => {
   //     // Cerrar el modal después de enviar el formulario
   //     onClose();
   //   };
-
+  const [activeTab, setActiveTab] = useState<string>("Iniciar");
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const modal = document.getElementById("modal");
@@ -45,8 +46,9 @@ const LoginModal: React.FC<ModalProps> = ({ onClose, type }) => {
   return (
     <div className="fixed inset-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center">
       <div id="modal" className="bg-white w-5/12 p-8 rounded-2xl shadow-md">
+        <MenuTabUsers activeTab={activeTab} setActiveTab={setActiveTab} />
         {/* Contenido del modal */}
-        {type == "signin" ? <SigIn /> : <SignUp />}
+      {activeTab == "Iniciar" ? <SigIn /> : <SignUp />}
         {/* Botón para cerrar el modal */}
         <button
           onClick={onClose}

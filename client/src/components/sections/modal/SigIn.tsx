@@ -64,7 +64,7 @@ function SignIn() {
   };
 
   return (
-    <div className="mt-5">
+    <div className="mt-5 transition-all ease-in-out duration-500">
       <h2 className="text-xl font-semibold mb-4 text-center">Iniciar sesión</h2>
       {error && (
         <h3 className="text-xl text-red-500 font-semibold mb-4 text-center">

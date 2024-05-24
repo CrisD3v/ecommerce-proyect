@@ -1,8 +1,8 @@
-import FormPerfil from "@/components/micro/formAccount/FormPerfil";
 import React from "react";
+import FormPerfil from "@/components/micro/formAccount/FormPerfil";
 
 
-function page({ params }: { params: { id: string} }) {
+function page({ params }: { params: { id: any} }) {
    
   
   return (

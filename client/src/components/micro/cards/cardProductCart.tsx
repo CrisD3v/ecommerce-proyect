@@ -55,6 +55,7 @@ function CardProductCart({ image, name, price, id, cantidad }: Props) {
   };
 
   const addToCart = async (product_id: number) => {
+    console.log(`${URL_BASE}uploads/${image}`);
     dispatch(setProductArr(product_id));
     try {
       if (!token) return;
